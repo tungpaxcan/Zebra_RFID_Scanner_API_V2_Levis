@@ -1,0 +1,649 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <base href="../../">
+    <meta charset="utf-8">
+    <title>@ViewBag.Title Zebra_RFID_Scanner</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
+    <!--end::Fonts-->
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="~/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/style.bundle.css" rel="stylesheet" type="text/css">
+    <!--end::Global Theme Styles-->
+    <!--begin::Layout Themes(used by all pages)-->
+    <link href="~/assets/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet"
+          href="https://site-assets.fontawesome.com/releases/v6.1.1/css/all.css" />
+    <link href="~/Content/loading.css" rel="stylesheet" />
+    <link href="~/Content/Style.css" rel="stylesheet" />
+    <link rel="icon" href="~/Images/rsz_1maersk-bco-cdb8c805.png" type="image/png">
+
+    <!--end::Layout Themes-->
+</head>
+
+<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable" data-scrolltop="on">
+    <div id="wait" style="display: none; position: fixed; z-index: 9999; height: 100%; width: 100%; background-image: url('/Images/demo_wait.gif'); background-repeat: no-repeat; background-position: center;"></div>
+
+    <!--begin::Main-->
+    <!--begin::Header Mobile-->
+    <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
+        <!--begin::Logo-->
+        <!--end::Logo-->
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+            <!--begin::Header Menu Mobile Toggle-->
+            <button class="btn p-0 burger-icon ml-4" id="kt_header_mobile_toggle">
+                <span></span>
+            </button>
+            <!--end::Header Menu Mobile Toggle-->
+            <!--begin::Topbar Mobile Toggle-->
+            <button class="btn btn-hover-text-primary p-0 ml-2" id="kt_header_mobile_topbar_toggle">
+                <span class="svg-icon svg-icon-xl">
+                    <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                            <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                            <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"></path>
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </span>
+            </button>
+            <!--end::Topbar Mobile Toggle-->
+        </div>
+        <!--end::Toolbar-->
+    </div>
+    <!--end::Header Mobile-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Page-->
+        <div class="d-flex flex-row flex-column-fluid page">
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+                <div id="kt_header" class="header header-fixed" style=" background: linear-gradient(90deg, rgba(19,143,169,1) 0%, rgba(11,34,88,1) 100%);">
+                    <!--begin::Container-->
+                    <div class="container-fluid d-flex align-items-stretch justify-content-between">
+                        <!--begin::Header Menu Wrapper-->
+                        <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+                            <!--begin::Header Menu-->
+                            <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
+                                <!--begin::Header Nav-->
+                                <ul class="menu-nav">
+                                    <li class="menu-item menu-item-submenu menu-item-rel menu-item-active menu-item-open-dropdown" data-menu-toggle="click" aria-haspopup="true">
+                                        <a href="javascript:;" class="menu-link menu-toggle">
+                                            <span class="menu-text">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.menu)</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                        <div class="menu-submenu menu-submenu-classic menu-submenu-left" data-hor-direction="menu-submenu-left">
+                                            <ul class="menu-subnav">
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="123-rfid-scanner/Index" class="menu-link">
+                                                        <span class="svg-icon menu-icon">
+                                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Clothes/Briefcase.svg-->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                                                    <path d="M5.84026576,8 L18.1597342,8 C19.1999115,8 20.0664437,8.79732479 20.1528258,9.83390904 L20.8194924,17.833909 C20.9112219,18.9346631 20.0932459,19.901362 18.9924919,19.9930915 C18.9372479,19.9976952 18.8818364,20 18.8264009,20 L5.1735991,20 C4.0690296,20 3.1735991,19.1045695 3.1735991,18 C3.1735991,17.9445645 3.17590391,17.889153 3.18050758,17.833909 L3.84717425,9.83390904 C3.93355627,8.79732479 4.80008849,8 5.84026576,8 Z M10.5,10 C10.2238576,10 10,10.2238576 10,10.5 L10,11.5 C10,11.7761424 10.2238576,12 10.5,12 L13.5,12 C13.7761424,12 14,11.7761424 14,11.5 L14,10.5 C14,10.2238576 13.7761424,10 13.5,10 L10.5,10 Z" fill="#000000"></path>
+                                                                    <path d="M10,8 L8,8 L8,7 C8,5.34314575 9.34314575,4 11,4 L13,4 C14.6568542,4 16,5.34314575 16,7 L16,8 L14,8 L14,7 C14,6.44771525 13.5522847,6 13,6 L11,6 C10.4477153,6 10,6.44771525 10,7 L10,8 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                                                                </g>
+                                                            </svg>
+                                                            <!--end::Svg Icon-->
+                                                        </span>
+                                                        <span class="menu-text">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.upload)</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="menu-item" aria-haspopup="true">
+                                                    <a href="HOD/Index" class="menu-link">
+                                                        <span class="svg-icon menu-icon">
+                                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Clothes/Briefcase.svg-->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                                                    <path d="M5.84026576,8 L18.1597342,8 C19.1999115,8 20.0664437,8.79732479 20.1528258,9.83390904 L20.8194924,17.833909 C20.9112219,18.9346631 20.0932459,19.901362 18.9924919,19.9930915 C18.9372479,19.9976952 18.8818364,20 18.8264009,20 L5.1735991,20 C4.0690296,20 3.1735991,19.1045695 3.1735991,18 C3.1735991,17.9445645 3.17590391,17.889153 3.18050758,17.833909 L3.84717425,9.83390904 C3.93355627,8.79732479 4.80008849,8 5.84026576,8 Z M10.5,10 C10.2238576,10 10,10.2238576 10,10.5 L10,11.5 C10,11.7761424 10.2238576,12 10.5,12 L13.5,12 C13.7761424,12 14,11.7761424 14,11.5 L14,10.5 C14,10.2238576 13.7761424,10 13.5,10 L10.5,10 Z" fill="#000000"></path>
+                                                                    <path d="M10,8 L8,8 L8,7 C8,5.34314575 9.34314575,4 11,4 L13,4 C14.6568542,4 16,5.34314575 16,7 L16,8 L14,8 L14,7 C14,6.44771525 13.5522847,6 13,6 L11,6 C10.4477153,6 10,6.44771525 10,7 L10,8 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                                                                </g>
+                                                            </svg>
+                                                            <!--end::Svg Icon-->
+                                                        </span>
+                                                        <span class="menu-text">HOD/@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.confirm)</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li onclick="RefreshEPC()" class="menu-item menu-item-submenu menu-item-rel menu-item-active" data-menu-toggle="click" aria-haspopup="true">
+                                        <a class="menu-link menu-toggle">
+                                            <span class="menu-text" style="color:red">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.refreshepc)</span>
+
+                                        </a>
+                                    </li>
+                                    <li onclick="" class="menu-item menu-item-submenu menu-item-rel menu-item-active" data-menu-toggle="click" aria-haspopup="true">
+                                        <a href="/Home/Help" class="menu-link ">
+                                            <span class="menu-text">Help</span>
+
+                                        </a>
+                                    </li>
+
+                                </ul>
+                                <!--end::Header Nav-->
+                            </div>
+                            <!--end::Header Menu-->
+                        </div>
+                        <!--end::Header Menu Wrapper-->
+                        <!--begin::Topbar-->
+                        <div class="topbar">
+                            <!--begin::Search-->
+                            <div class="dropdown open">
+                                <!--begin::Toggle-->
+                                <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" aria-expanded="false">
+                                    <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1" id="sslanguage">
+
+                                    </div>
+                                </div>
+                                <!--end::Toggle-->
+                                <!--begin::Dropdown-->
+                                <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-right">
+                                    <!--begin::Nav-->
+                                    <ul class="navi navi-hover py-4" id="language">
+                                        <!--begin::Item-->
+                                        <li class="navi-item" name="changeLanguage" id="en-US">
+                                            <a href="#" class="navi-link">
+                                                <span class="symbol symbol-20 mr-3">
+                                                    <img src="assets/media/svg/flags/226-united-states.svg" alt="">
+                                                </span>
+                                                <span class="navi-text">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.english)</span>
+                                            </a>
+                                        </li>
+                                        <li class="navi-item active" name="changeLanguage" id="vi-vn">
+                                            <a href="#" class="navi-link">
+                                                <span class="symbol symbol-20 mr-3">
+                                                    <img src="~/assets/media/svg/flags/220-vietnam.svg" alt="">
+                                                </span>
+                                                <span class="navi-text">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.vietnames)</span>
+                                            </a>
+                                        </li>
+                                        @*<li class="navi-item active" name="changeLanguage" id="km">
+                                                <a href="#" class="navi-link">
+                                                    <span class="symbol symbol-20 mr-3">
+                                                        <img src="~/assets/media/svg/flags/159-cambodia.svg" alt="">
+                                                    </span>
+                                                    <span class="navi-text">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.vietnames)</span>
+                                                </a>
+                                            </li>*@
+                                    </ul>
+                                    <!--end::Nav-->
+                                </div>
+                                <!--end::Dropdown-->
+                            </div>
+                            <!--end::Notifications-->
+                            <!--begin::User-->
+                            <div class="topbar-item">
+                                <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
+                                    <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.hi),</span>
+                                    <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3" name="nameUser"></span>
+                                    <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
+                                        <span class="symbol-label font-size-h5 font-weight-bold" name="firstuser"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <!--end::User-->
+                        </div>
+                        <!--end::Topbar-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+
+                @RenderBody()
+
+
+            </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Page-->
+    </div>
+    <!--end::Main-->
+    <!-- begin::User Panel-->
+    <div id="kt_quick_user" class="offcanvas offcanvas-right p-10">
+        <!--begin::Header-->
+        <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5" kt-hidden-height="40" style="">
+            <h3 class="font-weight-bold m-0" id="userprofile">
+            </h3>
+            <a href="" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
+                <i class="ki ki-close icon-xs text-muted"></i>
+            </a>
+        </div>
+        <!--end::Header-->
+        <!--begin::Content-->
+        <div class="offcanvas-content pr-5 mr-n5 scroll ps ps--active-y" style="height: 391px; overflow: hidden;">
+            <!--begin::Header-->
+            <div class="d-flex align-items-center mt-5">
+                <div class="symbol symbol-100 mr-5">
+                    <div class="symbol-label" style="background-image: url('/assets/media/users/blank.png')"></div>
+                    <i class="symbol-badge bg-success"></i>
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary" name="nameUser"></span>
+                    <div class="text-muted mt-1" name="authorizationUser"></div>
+                    <div class="navi mt-2">
+                        <a onclick="SignOut()" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.logout)</a>
+                    </div>
+                </div>
+            </div>
+            <div class="separator separator-dashed mt-8 mb-5"></div>
+            <div class="navi navi-spacer-x-0 p-0">
+                <!--begin::Item-->
+                <a name="admin" href="/Register/ListUser" class="navi-item">
+                    <div class="navi-link">
+                        <div class="symbol symbol-40 bg-light mr-3">
+                            <div class="symbol-label">
+                                <span class="svg-icon svg-icon-md svg-icon-danger">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Files/Selected-file.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                            <path d="M4.85714286,1 L11.7364114,1 C12.0910962,1 12.4343066,1.12568431 12.7051108,1.35473959 L17.4686994,5.3839416 C17.8056532,5.66894833 18,6.08787823 18,6.52920201 L18,19.0833333 C18,20.8738751 17.9795521,21 16.1428571,21 L4.85714286,21 C3.02044787,21 3,20.8738751 3,19.0833333 L3,2.91666667 C3,1.12612489 3.02044787,1 4.85714286,1 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                                            <path d="M6.85714286,3 L14.7364114,3 C15.0910962,3 15.4343066,3.12568431 15.7051108,3.35473959 L20.4686994,7.3839416 C20.8056532,7.66894833 21,8.08787823 21,8.52920201 L21,21.0833333 C21,22.8738751 20.9795521,23 19.1428571,23 L6.85714286,23 C5.02044787,23 5,22.8738751 5,21.0833333 L5,4.91666667 C5,3.12612489 5.02044787,3 6.85714286,3 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z" fill="#000000" fill-rule="nonzero"></path>
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>
+                            </div>
+                        </div>
+                        <div class="navi-text">
+                            <div class="font-weight-bold">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.accountmanagement)</div>
+                            <div class="text-muted">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.add)/@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.edit) @Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.accounts)</div>
+                        </div>
+                    </div>
+                </a>
+                <!--end:Item-->
+                <!--begin::Item-->
+                <a href="/Register/Info" class="navi-item">
+                    <div class="navi-link">
+                        <div class="symbol symbol-40 bg-light mr-3">
+                            <div class="symbol-label">
+                                <span class="svg-icon svg-icon-md svg-icon-success">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24"></rect>
+                                            <path d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z" fill="#000000"></path>
+                                            <circle fill="#000000" opacity="0.3" cx="18.5" cy="5.5" r="2.5"></circle>
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>
+                            </div>
+                        </div>
+                        <div class="navi-text">
+                            <div class="font-weight-bold">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.accountinformation)</div>
+                            <div class="text-muted">
+                                @Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.accountsettingsandmore)
+                                <span class="label label-light-danger label-inline font-weight-bold">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.update)</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Modal-->
+                <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.resetpassword)</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <i aria-hidden="true" class="ki ki-close"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group row">
+                                    <label for="example-password-input" class="col-4 col-form-label">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.oldpassword)<span style="color:red"> (*) </span></label>
+                                    <div class="col-8">
+                                        <div class="input-group ">
+                                            <input class="form-control" type="password" placeholder="@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.oldpassword)" id="oldPass" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-password-input" class="col-4 col-form-label">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.anewpassword)<span style="color:red"> (*) </span></label>
+                                    <div class="col-8">
+                                        <div class="input-group ">
+                                            <input class="form-control" type="password" placeholder="@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.anewpassword)" id="newPass" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-password-input" class="col-4 col-form-label">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.reenter) @Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.anewpassword)<span style="color:red"> (*) </span></label>
+                                    <div class="col-8">
+                                        <div class="input-group ">
+                                            <input class="form-control" type="password" placeholder="@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.reenter) @Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.anewpassword)" id="againNewPass" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light-danger font-weight-bold" data-dismiss="modal">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.close)</button>
+                                <button onclick="ChangePass()" type="button" class="btn btn-primary font-weight-bold">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.savechanges)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a name="admin" data-toggle="modal" data-target="#exampleModalLong" class="navi-item">
+                    <div class="navi-link">
+                        <div class="symbol symbol-40 bg-light mr-3">
+                            <div class="symbol-label">
+                                <span class="svg-icon svg-icon-md svg-icon-danger">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Files/Selected-file.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                            <path d="M4.85714286,1 L11.7364114,1 C12.0910962,1 12.4343066,1.12568431 12.7051108,1.35473959 L17.4686994,5.3839416 C17.8056532,5.66894833 18,6.08787823 18,6.52920201 L18,19.0833333 C18,20.8738751 17.9795521,21 16.1428571,21 L4.85714286,21 C3.02044787,21 3,20.8738751 3,19.0833333 L3,2.91666667 C3,1.12612489 3.02044787,1 4.85714286,1 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                                            <path d="M6.85714286,3 L14.7364114,3 C15.0910962,3 15.4343066,3.12568431 15.7051108,3.35473959 L20.4686994,7.3839416 C20.8056532,7.66894833 21,8.08787823 21,8.52920201 L21,21.0833333 C21,22.8738751 20.9795521,23 19.1428571,23 L6.85714286,23 C5.02044787,23 5,22.8738751 5,21.0833333 L5,4.91666667 C5,3.12612489 5.02044787,3 6.85714286,3 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z" fill="#000000" fill-rule="nonzero"></path>
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>
+                            </div>
+                        </div>
+                        <div class="navi-text">
+                            <div class="font-weight-bold">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.resetpassword)</div>
+                            <div class="text-muted">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.edit)/@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.change) @Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.password)</div>
+                        </div>
+                    </div>
+                </a>
+                <a name="admin" href="/Home/Advanced" class="navi-item">
+                    <div class="navi-link">
+                        <div class="symbol symbol-40 bg-light mr-3">
+                            <div class="symbol-label">
+                                <span class="svg-icon svg-icon-md svg-icon-success">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24"></rect>
+                                            <path d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z" fill="#000000"></path>
+                                            <circle fill="#000000" opacity="0.3" cx="18.5" cy="5.5" r="2.5"></circle>
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>
+                            </div>
+                        </div>
+                        <div class="navi-text">
+                            <div class="font-weight-bold">Advanced</div>
+                        </div>
+                    </div>
+                </a>
+                <!--end:Item-->
+            </div>
+        </div>
+        <!--end::Content-->
+    </div>
+    <!-- end::User Panel-->
+    <!--begin::Scrolltop-->
+    <div id="kt_scrolltop" class="scrolltop">
+        <span class="svg-icon">
+            <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Up-2.svg-->
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                    <rect fill="#000000" opacity="0.3" x="11" y="10" width="2" height="10" rx="1"></rect>
+                    <path d="M6.70710678,12.7071068 C6.31658249,13.0976311 5.68341751,13.0976311 5.29289322,12.7071068 C4.90236893,12.3165825 4.90236893,11.6834175 5.29289322,11.2928932 L11.2928932,5.29289322 C11.6714722,4.91431428 12.2810586,4.90106866 12.6757246,5.26284586 L18.6757246,10.7628459 C19.0828436,11.1360383 19.1103465,11.7686056 18.7371541,12.1757246 C18.3639617,12.5828436 17.7313944,12.6103465 17.3242754,12.2371541 L12.0300757,7.38413782 L6.70710678,12.7071068 Z" fill="#000000" fill-rule="nonzero"></path>
+                </g>
+            </svg>
+            <!--end::Svg Icon-->
+        </span>
+    </div>
+    <div class="alert-danger" id="error" style="display:none">
+        @Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.internetconnection)
+    </div>
+    <div class="alert-success" id="online" style="display:none">
+        @Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.internetdisconnect)
+    </div>
+    <!-- Modal-->
+    <div class="modal fade" id="modalimport" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.import)</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="file-upload">
+                        <div class="file-select">
+                            <div class="file-select-button" id="fileName">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.choosefile)</div>
+                            <div class="file-select-name" id="noFile">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.nofilechosen)...</div>
+                            <input type="file" name="UploadedFile" id="chooseFile">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Scrolltop-->
+    <!--begin::Sticky Toolbar-->
+    <!--end::Demo Panel-->
+    <!--begin::Global Config(global config for global JS scripts)-->
+    <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
+    <!--end::Global Config-->
+    <!--begin::Global Theme Bundle(used by all pages)-->
+    <!--end::Global Theme Bundle-->
+    <!--end::Body-->
+
+    <script src="~/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="~/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+    <script src="~/assets/js/scripts.bundle.js"></script>
+    <script>
+        window.addEventListener('offline', function () {
+            Swal.fire("@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.internetdisconnect)", "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pleasereconnecttothenetwork)", "error");
+        })
+        window.addEventListener('online', function () {
+            Swal.fire("@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.internetconnection)", "&#9989;", "success");
+        })
+          $('#chooseFile').bind('change', function () {
+            try {
+                var filename = $("#chooseFile").val();
+                if (/^\s*$/.test(filename)) {
+                    $(".file-upload").removeClass('active'); $("#noFile").empty()
+                    $("#noFile").append("@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.nofilechosen)...");
+                }
+                else {
+                    $(".file-upload").addClass('active');
+                    $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
+                }
+            } catch (error) {
+                Swal.fire(error.message, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pressthebutton)!", "error");
+            }
+
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
+    <script src="~/Scripts/Validate.js"></script>
+
+    <script>
+        var confirmVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.confirm)";
+        var closeVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.close)";
+        var pressButtonVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pressthebutton)";
+        var cancelVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.cancel)";
+        $(document).on({
+            ajaxStart: function () {
+                $("#wait").show();
+            },
+            ajaxStop: function () {
+                $("#wait").hide();
+            }
+        });
+        $(function LoadUser() {
+            $.ajax({
+                url: '/Home/UserSession',
+                type: 'get',
+                success: function (data) {
+                    if (data.code == 200) {
+                        $('span[name="nameUser"]').append(data.name)
+                        $('span[name="firstuser"]').append(data.name.trim().lastIndexOf(" ") == -1 ? data.name.substring(-1, 1) : data.name.substring(data.name.trim().lastIndexOf(" ") + 1, data.name.trim().lastIndexOf(" ") + 2))
+                        if (data.admin == false) {
+                            $('div[name="admin"]').css("display", "none");
+                            $('a[name="admin"]').css("display", "none");
+                            $('li[name="admin"]').css("display", "none");
+                            $('div[name="authorizationUser"]').append("@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.staff)");
+                        } else {
+                            $('div[name="authorizationUser"]').append("@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.manage)");
+                        }
+                    }
+                    else {
+                        Swal.fire(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pressthebutton)", "error");
+                    }
+                },
+            })
+        })
+        function checkSessionvalidity() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/Home/Page_Load', true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.stat === 200) {
+                        console.log("1")
+                    } else if (xhr.status === 401) {
+                        SignOut()
+                    }
+                }
+            };
+            xhr.send();
+        }
+        setInterval(checkSessionvalidity, 5 * 60 * 1000);
+        function ChangePass() {
+            let oldPass = $('#oldPass').val().trim()
+            let newPass = $('#newPass').val().trim()
+            let againNewPass = $('#againNewPass').val().trim()
+            if (newPass.length < 6) {
+                Swal.fire("@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.newpasswordmustbegreaterthan6characters) !!!", "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pressthebutton)", "warning"); $('#newPass').css('border-color', "red"); return;
+            } else { $('#newPass').css('border-color', "green") }
+            if (newPass != againNewPass) {
+                Swal.fire("@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.reenterincorrectpassword) !!!", "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pressthebutton)", "warning"); $('#againNewPass').css('border-color', "red"); return;
+            } else { $('#againNewPass').css('border-color', "green") }
+            $.ajax({
+                url: '/Register/ChangePass',
+                type: 'post',
+                data: { oldPass, newPass },
+                success: function (data) {
+                    if (data.code == 200) {
+                        Swal.fire({
+                            title: data.msg,
+                            icon: "success",
+                            buttonsStyling: false,
+                            confirmButtonText: `<a style="color:white" href="/Home/Index">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.confirm)</a>`,
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        });
+
+                    } else if (data.code == 300) {
+                        Swal.fire(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pressthebutton)", "error");
+                        $('#oldPass').css('border-color', "red")
+                    }
+                    else {
+                         Swal.fire(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pressthebutton)", "error");
+                    }
+                },
+            })
+        }
+        function DeleteEPC() {
+            $.ajax({
+                url: '/FunctionOrder/DeleteEPC',
+                type: 'post',
+                success: function (data) {
+                    if (data.code == 200) {
+                    }
+                }
+            })
+        }
+        function epctoUPC(epc) {
+            let EPC = epc;
+            let EPCIN = "";
+            let SGTIN = "";
+            let ItemRef = "";
+            let Result = "";
+            let UPC = "";
+            let i, SGTINResult, ItemRefResult, CheckDigit = 0;
+            //chuyển đổi các ký tự hexa trong chuỗi EPC thành dạng nhị phân 4 bit tương ứng, và nối chúng thành một chuỗi nhị phân duy nhất EPCIN.
+            for (i = 0; i < EPC.length; i++) {
+                EPCIN += parseInt(EPC.substring(i, i + 1), 16).toString(2).padStart(4, '0');
+            }
+            //lấy 82 bit cuối
+            EPCIN = EPCIN.substring(EPCIN.length - 82);
+            //lấy 24 bit đầu
+            SGTIN = EPCIN.substring(0, 24);
+            //lấy 20 bit tiếp theo
+            ItemRef = EPCIN.substring(24, 44);
+            //tính tổng theo công thức (i*2^(length-1-(i--)))
+            SGTINResult = 0;
+            for (i = 1; i < SGTIN.length; i++) {
+                SGTINResult += parseInt(SGTIN[i]) * Math.pow(2, SGTIN.length - i - 1);
+            }
+
+            //tính tổng theo công thức (i*2^(length-1-(i--)))
+            ItemRefResult = 0;
+            for (i = 1; i < ItemRef.length; i++) {
+                ItemRefResult += parseInt(ItemRef[i]) * Math.pow(2, ItemRef.length - i - 1);
+            }
+            //them 0 trước nếu itemrs không đủ 5 kí tư
+            Result = SGTINResult.toString() + ("00000" + ItemRefResult).substring(Math.max(0, ("00000" + ItemRefResult).length - 5));
+            CheckDigit = 0;
+            for (i = 1; i <= 17; i++) {
+                if (Result.length > Math.abs(i - 17)) {
+                    if (i % 2 != 0) {
+                        CheckDigit += 3 * parseInt(Result.substring(Result.length - Math.abs(i - 17) - 1, Result.length - Math.abs(i - 17)), 10);
+                    } else {
+                        CheckDigit += parseInt(Result.substring(Result.length - Math.abs(i - 17) - 1, Result.length - Math.abs(i - 17)), 10);
+                    }
+                }
+            }
+            CheckDigit = parseInt(Math.ceil(CheckDigit / 10) * 10, 10) - CheckDigit;
+            UPC = Result + CheckDigit.toString();
+
+            return UPC;
+        }
+
+
+        function upctoEPC(upc) {
+            let UPC = upc
+            let SGTINResult = Number(UPC.toString().substring(0, 7));
+            let ItemRefResult = Number(UPC.toString().substring(7, 12));
+
+            let SGTINBinary = SGTINResult.toString(2).padStart(24, '0');// Chuyển SGTINResult sang dạng nhị phân và thêm padding để đủ 24 bit
+            let ItemRefBinary = ItemRefResult.toString(2).padStart(20, '0');//
+            let SGTIN = SGTINBinary;
+            let ItemRef = ItemRefBinary
+
+            let binary = "00110000001101" + SGTIN + ItemRef + '00110011001110010000010110110000011000'
+
+
+            let hex = ""; // Chuỗi hexa chứa kết quả
+
+            for (let i = 0; i < binary.length; i += 4) {
+                let chunk = binary.substring(i, i + 4); // Tách chuỗi thành từng khối 4 bit
+                let decimal = parseInt(chunk, 2); // Chuyển khối 4 bit sang giá trị decimal
+                let hexChunk = decimal.toString(16); // Chuyển giá trị decimal sang dạng hexa
+                hex += hexChunk; // Thêm khối hexa vào chuỗi hex
+            }
+            hex = hex.substring(0, hex.length - 3)
+
+            return hex;
+        }
+    </script>
+    <script src="~/Scripts/Layout.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

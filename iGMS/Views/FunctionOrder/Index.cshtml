@@ -1,0 +1,252 @@
+﻿
+@{
+    ViewBag.Title = @Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.packinglist);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/inputmultiple.css" rel="stylesheet" />
+<div class="container">
+    <div class="form-group row">
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+            <form id="form">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label>port_code:</label>
+                            <input type="text" name="portCode" id="portCode" class="form-control" placeholder="Enter full name">
+                            <span class="form-text text-muted">Please enter your port_code</span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>Date:</label>
+                            <input type="date" class="form-control" name="date" id="date" placeholder="Bottom left">
+                            <span class="form-text text-muted">Please enter your date</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <button type="button" onclick="getFileApi()" class="btn btn-success mr-2">Get file</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="card-body" style="display:flex;justify-content:center;text-align:center">
+                <input onchange="upload(event)" style="transform:translateY(150%)" class="file-uploader__submit-button" type="file" value="@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.upload) PreASN">
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6" style=" margin-top: 5%;">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                <div class="form-group">
+                    <div class="input-icon input-icon-right">
+                        <input type="search" id="seach" class="form-control" placeholder="@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.search)...">
+                        <span>
+                            <i class="flaticon2-search-1 icon-md"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-custom card-stretch gutter-b">
+                <div class="card-header border-0">
+                    <h3 class="card-title font-weight-bolder text-dark">PreASN</h3>
+                </div>
+                <div class="card-body pt-2" id="tbd">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 100%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.checkthegoods)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="ex"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success mr-2 on" onclick="RFID()">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.startRFIDscanning)</button>
+                <button type="submit" class="btn btn-warning mr-2" onclick="error()">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.review)</button>
+                <button type="submit" class="btn btn-secondary mr-2 off" style="display:none" onclick=" Stop()">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.stopRFIDscanning)</button>
+                <button type="submit" class="btn btn-primary mr-2" id="complete">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.complete)</button>
+                <button type="button" class="btn btn-light-danger font-weight-bold" data-dismiss="modal">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.close)</button>
+            </div>
+            <div class="form-group  row">
+                <label for="example-search-input" class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-form-label">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.thereareotheritemcodes)<span style="color:red"> (*) </span></label> <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10 col-xxl-10">
+                    <textarea class="form-control" id="idorder"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button hidden type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
+</button>
+@section scripts{
+
+    <script>
+        var nofilechosenVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.nofilechosen)"
+        var filelistVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.filelist)"
+        var canopenthisfileVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.canopenthisfile)"
+        var wecannotacceptthisfiletypeatthistimeVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.wecannotacceptthisfiletypeatthistime)"
+        var pleaseselectafileVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pleaseselectafile)"
+    </script>
+
+    <script src="~/Scripts/xlsx.full.min.js"></script>
+    <script>
+
+        function getFileApi() {
+            const form = document.getElementById("form");
+            const formData = new FormData(form);
+            $.ajax({
+                url: 'functionorder/GetFileApi',
+                type: 'post',
+                data: formData,
+                processData: false, // Không xử lý dữ liệu
+                contentType: false, // Không set content type
+                success: function (data) {
+                    if (data.code == 200) {
+                        toastr.success(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.success) !!!");
+                        getFile(data.fileUrl)
+                    } else {
+                          toastr.error(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
+                    }
+                },
+            })
+        }
+
+        function getFile(file) {
+            var link = "/PreASN/" + file + ""
+            var name = file.replace(".xlsx", "").replace(".csv", "")
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', link, true);
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = function (e) {
+                if (xhr.status == 200) {
+                    var data = new Uint8Array(xhr.response);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var sheet_name_list = workbook.SheetNames;
+                    var sheet_data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+                    localStorage.setItem('nameReports', name);
+                    successFunction(sheet_data, name)
+                }
+            };
+            xhr.send();
+        }
+
+
+        let dataIDTable;
+
+        let seach = "";
+        table(seach)
+        $('#seach').keyup(function () {
+            seach = $('#seach').val().trim()
+            table(seach)
+        })
+
+        function table(seach) {
+            $.ajax({
+                url: '/FunctionOrder/List',
+                type: 'get',
+                data: { seach },
+                success: function (data) {
+                    if (data.code == 200) {
+                        $('#tbd').empty()
+                        $.each(data.pkl, function (k, v) {
+                            let tbd = `<div class="d-flex align-items-center mb-10">
+                        <div class="symbol symbol-40 symbol-light-success mr-5">
+                            <span class="symbol-label">
+                                <img src="/Images/icons8-xlsx-file-40.png" />
+                            </span>
+                        </div>
+                        <div class="d-flex flex-column flex-grow-1 font-weight-bold">
+                            <a data-href="${v.Path}" name="show" class="text-dark text-hover-primary mb-1 font-size-lg">${v.Name}</a>
+                        </div>
+                    </div>`
+                            $('#tbd').append(tbd)
+                        })
+                        $.each(data.rsl, function (k, v) {
+                             toastr.error(v, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
+                        })
+
+                    }
+                },
+            })
+        }
+
+        $(document).on('click', 'a[name="show"]', function () {
+            $('#ex').empty()
+            $('#idorder').val('')
+            var link = $(this).attr('data-href')
+            var name = $(this).text().replace(".xlsx", "").replace(".csv","")
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', link, true);
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = function (e) {
+                if (xhr.status == 200) {
+                    var data = new Uint8Array(xhr.response);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var sheet_name_list = workbook.SheetNames;
+                    var sheet_data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+                    localStorage.setItem('nameReports', name);
+                    successFunction(sheet_data,name)
+                }
+            };
+            xhr.send();
+        })
+        function upload(event) {
+            var file = event.target.files[0];
+            var name = file["name"].replace('.xlsx', '').replace(".csv", "");
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var data = new Uint8Array(e.target.result);
+                var workbook = XLSX.read(data, { type: 'array' });
+                var sheet_name_list = workbook.SheetNames;
+                var sheet_data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+                localStorage.setItem('nameReports', name);
+
+                successFunction(sheet_data, name);
+
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+    </script>
+    <script>
+        var customer
+        var style;
+        var color;
+        var start;
+        var end;
+        var arraySizes = [];
+        var arrayTotals = [];
+        const tbody = (prm) => {
+            return $('#tbdscaner')[0].childNodes[prm]
+        }
+        //success set table
+        function successFunction(data,name) {
+            localStorage.setItem('data', JSON.stringify(data));
+            var type = false;
+            if ("EPC" in data[0]||"epc" in data[0]) {
+                type = true;
+            } else {
+                type = false;
+            }
+            $.ajax({
+                url: '/Home/CheckPreASN',
+                type: 'get',
+                data: { name, type },
+                success: function (data) {
+                    if (data.code == 200) {
+                        window.location.href = data.url
+                    }else if (data.code == "error") {
+                                toastr.error(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
+                            }
+                },
+            })
+        }
+    </script>
+}
