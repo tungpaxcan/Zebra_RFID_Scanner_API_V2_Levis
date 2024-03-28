@@ -287,7 +287,7 @@ namespace Zebra_RFID_Scanner.Controllers
         {
             try
             {
-                string a = Configuration
+              
                 string hostApi = ConfigurationManager.ConnectionStrings["HostApi"].ConnectionString;
                 string port_code = Request.Form["portCode"];
                 string date = Request.Form["date"];
