@@ -10,12 +10,22 @@ namespace Zebra_RFID_Scanner.Models
 
     public class ReponseApi
     {
+        [JsonProperty("statusCode")]
+        public int StatusCode { get; set; }
 
-        public int statusCode { get; set; }
+        [JsonProperty("headers")]
+        public Dictionary<string, string> Headers { get; set; }
 
-        public string body { get; set; }
+        [JsonProperty("body")]
+        public string Body { get; set; }
 
-        public bool isBase64Encoded { get; set; }
+        [JsonProperty("isBase64Encoded")]
+        public bool IsBase64Encoded { get; set; }
+    }
+    public class Headers
+    {
+        [JsonProperty("content-type")]
+        public string contenttype { get; set; }
     }
 
     public class ReponseCheckFile

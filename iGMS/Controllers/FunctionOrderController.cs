@@ -222,24 +222,24 @@ namespace Zebra_RFID_Scanner.Controllers
 
                             string doNo = recordDict.Keys.ToArray()[0].ToString().Trim();
                             string subDoNo = recordDict.Keys.ToArray()[1].ToString().Trim();
-                            string mngFctryCd = recordDict.Keys.ToArray()[2].ToString().Trim();
-                            string facBranchCd = recordDict.Keys.ToArray()[3].ToString().Trim();
-                            string shipperCode = recordDict.Keys.ToArray()[4].ToString().Trim();
-                            string setCd = recordDict.Keys.ToArray()[5].ToString().Trim();
-                            string cntNo = recordDict.Keys.ToArray()[6].ToString().Trim();
-                            string yr = recordDict.Keys.ToArray()[7].ToString().Trim();
-                            string ssnCd = recordDict.Keys.ToArray()[8].ToString().Trim();
-                            string dptPortCd = recordDict.Keys.ToArray()[9].ToString().Trim();
-                            string cntry = recordDict.Keys.ToArray()[10].ToString().Trim();
-                            string exf = recordDict.Keys.ToArray()[11].ToString().Trim();
-                            string packKey = recordDict.Keys.ToArray()[12].ToString().Trim();
-                            string epc = recordDict.Keys.ToArray()[13].ToString().Trim();
+                            //string mngFctryCd = recordDict.Keys.ToArray()[2].ToString().Trim();
+                            //string facBranchCd = recordDict.Keys.ToArray()[3].ToString().Trim();
+                            //string shipperCode = recordDict.Keys.ToArray()[4].ToString().Trim();
+                            string setCd = recordDict.Keys.ToArray()[2].ToString().Trim();
+                            string cntNo = recordDict.Keys.ToArray()[3].ToString().Trim();
+                            string yr = recordDict.Keys.ToArray()[4].ToString().Trim();
+                            string ssnCd = recordDict.Keys.ToArray()[5].ToString().Trim();
+                            string dptPortCd = recordDict.Keys.ToArray()[6].ToString().Trim();
+                            string cntry = recordDict.Keys.ToArray()[7].ToString().Trim();
+                            string exf = recordDict.Keys.ToArray()[8].ToString().Trim();
+                            string packKey = recordDict.Keys.ToArray()[9].ToString().Trim();
+                            string epc = recordDict.Keys.ToArray()[10].ToString().Trim();
 
                             if (doNo != "doNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " doNo"); }
                             else if (subDoNo != "subDoNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " subDoNo"); }
-                            else if (mngFctryCd != "mngFctryCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " mngFctryCd"); }
-                            else if (facBranchCd != "facBranchCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " facBranchCd"); }
-                            else if (shipperCode != "shipperCode") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " shipperCode"); }
+                            //else if (mngFctryCd != "mngFctryCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " mngFctryCd"); }
+                            //else if (facBranchCd != "facBranchCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " facBranchCd"); }
+                            //else if (shipperCode != "shipperCode") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " shipperCode"); }
                             else if (setCd != "setCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " setCd"); }
                             else if (cntNo != "cntNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " cntNo"); }
                             else if (yr != "yr") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " yr"); }
@@ -287,7 +287,7 @@ namespace Zebra_RFID_Scanner.Controllers
         {
             try
             {
-              
+                
                 string hostApi = ConfigurationManager.ConnectionStrings["HostApi"].ConnectionString;
                 string port_code = Request.Form["portCode"];
                 string date = Request.Form["date"];
@@ -312,23 +312,23 @@ namespace Zebra_RFID_Scanner.Controllers
                         var response = await client.SendAsync(request);
                         if (response.IsSuccessStatusCode)
                         {
-                            //var responseContent = await response.Content.ReadAsAsync<string>();
-                            ReponseApi jsonResponse = JsonConvert.DeserializeObject<ReponseApi>(await response.Content.ReadAsStringAsync());
+                            var responsecontent = await response.Content.ReadAsAsync<string>();
+                            ReponseApi jsonResponse = JsonConvert.DeserializeObject<ReponseApi>(responsecontent);
 
-                            if (jsonResponse.statusCode == 400)
+                            if (jsonResponse.StatusCode == 200)
                             {
                                 string folderName = @"C:\RFID\PreASN\";
                                 string fileUrl = port_code + "_" + date + ".csv";
-                                await DownloadFileAsync(jsonResponse.body, folderName, fileUrl);
+                                await DownloadFileAsync(jsonResponse.Body, folderName, fileUrl);
                                 return Json(new { code = 200, msg = "Retrieve File successfully", fileUrl }, JsonRequestBehavior.AllowGet);
                             }
-                            else if (jsonResponse.statusCode == 200)
+                            else if (jsonResponse.StatusCode == 400)
                             {
-                                return Json(new { code = 500, msg = rm.GetString("false").ToString() + " " + jsonResponse.body }, JsonRequestBehavior.AllowGet);
+                                return Json(new { code = 500, msg = rm.GetString("false").ToString() + " " + jsonResponse.Body }, JsonRequestBehavior.AllowGet);
                             }
                             else
                             {
-                                return Json(new { code = 500, msg = rm.GetString("false").ToString() + " " + jsonResponse.body }, JsonRequestBehavior.AllowGet);
+                                return Json(new { code = 500, msg = rm.GetString("false").ToString() + " " + jsonResponse.Body }, JsonRequestBehavior.AllowGet);
                             }
 
                         }
@@ -349,7 +349,7 @@ namespace Zebra_RFID_Scanner.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { code = 500, msg = rm.GetString("false").ToString() + " " + ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = 500, msg = rm.GetString("false").ToString() + " " + ex.Message+ex.InnerException }, JsonRequestBehavior.AllowGet);
             }
 
         }
@@ -381,32 +381,62 @@ namespace Zebra_RFID_Scanner.Controllers
                             using (var stream = await response.Content.ReadAsStreamAsync())
                             using (var reader = new StreamReader(stream))
                             {
-                                var header = "doNo,subDoNo,mngFctryCd,facBranchCd,shipperCode,setCd,cntNo,yr,ssnCd,dptPortCd,cntry,exf,packKey,epc,SOnumber,PO,SKU,UPC";
-                                rows.Add(new List<string>(header.Split(',')));
 
+                                List<string> rowValuesHead = new List<string>();
+                                rowValuesHead.Add("doNo");
+                                rowValuesHead.Add("subDoNo");
+                                rowValuesHead.Add("mngFctryCd");
+                                rowValuesHead.Add("facBranchCd");
+                                rowValuesHead.Add("shipperCode");
+                                rowValuesHead.Add("setCd");
+                                rowValuesHead.Add("cntNo");
+                                rowValuesHead.Add("yr");
+                                rowValuesHead.Add("ssnCd");
+                                rowValuesHead.Add("dptPortCd");
+                                rowValuesHead.Add("cntry");
+                                rowValuesHead.Add("exf");
+                                rowValuesHead.Add("packKey");
+                                rowValuesHead.Add("epc");
+                                rowValuesHead.Add("SOnumber");
+                                rowValuesHead.Add("PO");
+                                rowValuesHead.Add("SKU");
+                                rowValuesHead.Add("UPC");
+                                rows.Add(rowValuesHead);
                                 while (!reader.EndOfStream)
                                 {
                                     var line = await reader.ReadLineAsync();
                                     var values = line.Split(',');
-                                    // Chèn thêm hai phần tử vào mảng values ở vị trí thứ hai và thứ ba
-                                    var newValues = new string[values.Length + 3];
-                                    Array.Copy(values, 0, newValues, 0, 1); // Sao chép các phần tử ban đầu
-                                    newValues[1] = ""; // Phần tử thứ 1 subDoNo
-                                    newValues[2] = ""; // Phần tử thứ 1 mngFctryCd
-                                    newValues[3] = ""; // Phần tử thứ 2 facBranchCd
-                                    Array.Copy(values, 1, newValues, 4, values.Length - 1); // Sao chép phần còn lại của mảng values
-                                    rows.Add(new List<string>(newValues));
+                                    List<string> rowValues = new List<string>(values);
+                                    //if (rowValues[0]== "doNo")
+                                    //{
+                                    //    rowValues[10] = "cntry";
+                                    //    rowValues[12] = "packKey";
+                                    //    // Thêm ba cột mới với giá trị "s"
+                                    //    rowValues.Add("SOnumber");
+                                    //    rowValues.Add("PO");
+                                    //    rowValues.Add("SKU");
+                                    //    rowValues.Add("UPC");
+                                    //}
+                                    //else
+                                    //{
+                                    //    // Thêm ba cột mới với giá trị "s"
+                                    //    rowValues.Add("s");
+                                    //    rowValues.Add("s");
+                                    //    rowValues.Add("s");
+                                    //    // Thêm giá trị tính toán từ controller.epctoupc() vào cột thứ 14 (index 13)
+                                    //    string computedValue = controller.epctoupc(rowValues[13]);
+                                    //    rowValues.Add(computedValue);
+                                    //}
+                                    rowValues.Add("s");
+                                    rowValues.Add("s");
+                                    rowValues.Add("s");
+                                    // Thêm giá trị tính toán từ controller.epctoupc() vào cột thứ 14 (index 13)
+                                    string computedValue = controller.epctoupc(rowValues[13]);
+                                    rowValues.Add(computedValue);
+                                    // Thêm hàng mới vào danh sách các hàng
+                                    rows.Add(rowValues);
                                 }
                             }
-                            // Thêm dữ liệu mới vào các hàng
-                            for (int i = 1; i < rows.Count; i++)
-                            {
-                                rows[i].Add("s");
-                                rows[i].Add("s");
-                                rows[i].Add("s");
-                                rows[i].Add(controller.epctoupc(rows[i][13].ToString()));
-                            }
-
                             // Ghi dữ liệu đã được mở rộng vào file CSV
                             using (var fileStream = new FileStream(destinationFolder + Path.GetFileName(namePath), FileMode.Create))
                             using (var writer = new StreamWriter(fileStream))
@@ -415,16 +445,17 @@ namespace Zebra_RFID_Scanner.Controllers
                                 {
                                     await writer.WriteLineAsync(string.Join(",", row));
                                 }
-                                string destinationFilePath = Server.MapPath("/PreASN/" + namePath + "");
-                                System.IO.File.Copy(destinationFolder + Path.GetFileName(namePath), destinationFilePath);
+                             
                             }
+                            string destinationFilePath = Server.MapPath("/PreASN/" + namePath + "");
+                            System.IO.File.Copy(destinationFolder + Path.GetFileName(namePath), destinationFilePath);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
         [HttpPost]

@@ -92,7 +92,7 @@
         var wecannotacceptthisfiletypeatthistimeVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.wecannotacceptthisfiletypeatthistime)"
         var pleaseselectafileVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pleaseselectafile)"
     </script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="~/Scripts/xlsx.full.min.js"></script>
     <script>
 
@@ -121,20 +121,22 @@
             var name = file.replace(".xlsx", "").replace(".csv", "")
             var xhr = new XMLHttpRequest();
             xhr.open('GET', link, true);
-            xhr.responseType = 'arraybuffer';
+            xhr.responseType = 'text'; // Đặt responseType thành 'text' cho dữ liệu CSV
             xhr.onload = function (e) {
                 if (xhr.status == 200) {
-                    var data = new Uint8Array(xhr.response);
-                    var workbook = XLSX.read(data, { type: 'array' });
-                    var sheet_name_list = workbook.SheetNames;
-                    var sheet_data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+                    var csvData = xhr.responseText; // Dữ liệu CSV
+                    var parsedData = Papa.parse(csvData, { header: true }); // Sử dụng PapaParse để phân tích dữ liệu CSV
+                    var data = parsedData.data.filter(function (row) {
+                        return Object.values(row).some(value => value !== '');
+                    });
+                    // Lưu trữ tên của báo cáo
                     localStorage.setItem('nameReports', name);
-                    successFunction(sheet_data, name)
+                    // Gọi hàm successFunction với dữ liệu và tên báo cáo
+                    successFunction(data, name);
                 }
             };
             xhr.send();
         }
-
 
         let dataIDTable;
 
@@ -182,19 +184,59 @@
             var name = $(this).text().replace(".xlsx", "").replace(".csv","")
             var xhr = new XMLHttpRequest();
             xhr.open('GET', link, true);
-            xhr.responseType = 'arraybuffer';
-            xhr.onload = function (e) {
-                if (xhr.status == 200) {
-                    var data = new Uint8Array(xhr.response);
-                    var workbook = XLSX.read(data, { type: 'array' });
-                    var sheet_name_list = workbook.SheetNames;
-                    var sheet_data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
-                    localStorage.setItem('nameReports', name);
-                    successFunction(sheet_data,name)
-                }
-            };
-            xhr.send();
+            if (!$(this).text().includes(".csv")) {
+                xhr.responseType = 'arraybuffer';
+                xhr.onload = function (e) {
+                    if (xhr.status == 200) {
+                        var data = new Uint8Array(xhr.response);
+                        var workbook = XLSX.read(data, { type: 'array' });
+                        var sheet_name_list = workbook.SheetNames;
+                        var sheet_data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+                        localStorage.setItem('nameReports', name);
+                        successFunction(sheet_data, name)
+                    }
+                };
+                xhr.send();
+            }else {
+                xhr.responseType = 'text'; // Đặt responseType thành 'text' cho dữ liệu CSV
+                xhr.onload = function (e) {
+                    if (xhr.status == 200) {
+                        var csvData = xhr.responseText; // Dữ liệu CSV
+                        var parsedData = Papa.parse(csvData, { header: true }); // Sử dụng PapaParse để phân tích dữ liệu CSV
+                        var data = parsedData.data.filter(function (row) {
+                            return Object.values(row).some(value => value !== '');
+                        });
+                        // Lưu trữ tên của báo cáo
+                        localStorage.setItem('nameReports', name);
+                        // Gọi hàm successFunction với dữ liệu và tên báo cáo
+                        console.log(data)
+                        successFunction(data, name);
+                    }
+                };
+                xhr.send();
+            }
         })
+        //function getFile(file) {
+        //    var link = "/PreASN/" + file + "";
+        //    var name = file.replace(".xlsx", "").replace(".csv", "");
+
+        //    var xhr = new XMLHttpRequest();
+        //    xhr.open('GET', link, true);
+        //    xhr.responseType = 'text'; // Đặt responseType thành 'text' cho dữ liệu CSV
+        //    xhr.onload = function (e) {
+        //        if (xhr.status == 200) {
+        //            var csvData = xhr.responseText; // Dữ liệu CSV
+        //            var parsedData = Papa.parse(csvData, { header: true }); // Sử dụng PapaParse để phân tích dữ liệu CSV
+
+        //            // Lưu trữ tên của báo cáo
+        //            localStorage.setItem('nameReports', name);
+        //            console.log(parsedData.data); return;
+        //            // Gọi hàm successFunction với dữ liệu và tên báo cáo
+        //            successFunction(parsedData.data, name);
+        //        }
+        //    };
+        //    xhr.send();
+        //}
         function upload(event) {
             var file = event.target.files[0];
             var name = file["name"].replace('.xlsx', '').replace(".csv", "");

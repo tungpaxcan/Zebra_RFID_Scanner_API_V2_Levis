@@ -73,9 +73,9 @@
                                     Send Report
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" onclick="SendGeneral('General')">General scanning report</a>
-                                    <a class="dropdown-item" onclick="SendDiscrepancy('DiscrepancyDetail')">DiscrepancyDetail report</a>
-                                    <a class="dropdown-item" onclick="SendEpc('EPC')">EPC- UPC reports</a>
+                                    <a class="dropdown-item" onclick="SendGeneral('General')">Send File API</a>
+                                    @*<a class="dropdown-item" onclick="SendDiscrepancy('DiscrepancyDetail')">DiscrepancyDetail report</a>
+        <a class="dropdown-item" onclick="SendEpc('EPC')">EPC- UPC reports</a>*@
                                 </div>
                             </div>
                             <div class="my-lg-0 my-1">
@@ -187,7 +187,7 @@
                 <table class="table table-head-custom table-head-bg table-borderless table-vertical-center" style="align-items:center">
                     <thead>
                         <tr class="text-uppercase">
-                            <th style="min-width:100px">UPC</th>
+                            <th style="min-width:100px">UPC/CTN</th>
                             <th style="min-width:100px">QTY</th>
                             <th style="min-width:100px">QTY SCAN</th>
                             <th style="min-width:100px">STATUS</th>
@@ -284,7 +284,7 @@
                                                 Rescan
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" onclick="rescan()">Rescan Unscanned Ctn</a>
+                                                @*<a class="dropdown-item" onclick="rescan()">Rescan Unscanned Ctn</a>*@
                                                 <a class="dropdown-item" onclick="rescanAll()">Rescan The Scanned Ctn</a>
                                             </div>
                                         </div>
@@ -1215,7 +1215,7 @@
         });
 
         var pageNumberCtn = 1;
-
+        var fileCsv;
         function loadMoreDataCtn(page) {
             var id = "";
             var idName = $('select[name="nameReports"]').val();
@@ -1304,6 +1304,7 @@
                 method: 'GET',
                 data: { id: id, page: page },
                 success: function (data) {
+                    fileCsv = data.fileCsv;
                     dataF = dataF.concat(data.discrepancies);
                     dataG = dataG.concat(data.general);
                     // Tiếp tục gọi AJAX để lấy dữ liệu của trang tiếp theo nếu cần
@@ -1313,6 +1314,7 @@
                         // Khi đã lấy đủ dữ liệu, tiến hành xử lý
                         processData(dataF, dataG, data.Consignee, data.Shipper, data.createDate, data.modifyDate);
                     }
+                   
                 },
                 error: function (error) {
                     // Xử lý lỗi
@@ -1326,9 +1328,15 @@
 
             $.each(dataF, function (k, v) {
                 if (checkupctotal.includes(v.upc)) {
+                    if (fileCsv.length > 0) {
+                        var qtyScan = $(`span[name="dataqtyscan${v.upc}"]`).text()
+                        $(`span[name="dataqtyscan${v.upc}"]`).text(Number(qtyScan) + Number(v.qtyScan))
+                    }
                     var qty = $(`span[name="dataqty${v.upc}"]`).text()
+                   
                     var ctn = $(`span[name="datactn${v.upc}"]`).text()
                     $(`span[name="dataqty${v.upc}"]`).text(Number(qty) + Number(v.qty))
+                   
                     $(`span[name="datactn${v.upc}"]`).append(", " + v.ctn)
                 } else {
                     checkupctotal.push(v.upc)
@@ -1353,8 +1361,13 @@
             var checkupctotal1 = []
             $.each(dataF, function (k, v) {
                 if (checkupctotal1.includes(v.upc)) {
+                    if (fileCsv.length > 0) {
+                        var qtyScan = $(`span[name="data1qtyscan${v.upc}"]`).text()
+                        $(`span[name="data1qtyscan${v.upc}"]`).text(Number(qtyScan) + Number(v.qtyScan))
+                    }
                     var qty = $(`span[name="data1qty${v.upc}"]`).text()
                     $(`span[name="data1qty${v.upc}"]`).text(Number(qty) + Number(v.qty))
+                  
                 } else {
                     checkupctotal1.push(v.upc)
 
@@ -1663,7 +1676,6 @@
         function rescanAll() {
 
             var id = $('select[name="nameReports"]').val()
-
             localStorage.setItem('nameReports', id);
             $.ajax({
                 url: '/Reports/rescanAll',
@@ -2027,6 +2039,8 @@
                          success: function (data) {
                              if (data.code == 200) {
                                  toastr.success("success", "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.success) !!!");
+                             } else {
+                                 toastr.error("error", "" + data.msg + " !!!");
                              }
                          }
                      })

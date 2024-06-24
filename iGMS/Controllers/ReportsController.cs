@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -17,6 +18,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Services.Description;
+using System.Web.UI.WebControls.WebParts;
 using System.Windows.Media;
 using Zebra_RFID_Scanner.Models;
 
@@ -80,25 +82,8 @@ namespace Zebra_RFID_Scanner.Controllers
             try
             {
                 string port = "";
-                var check = db.EPCDiscrepancies.FirstOrDefault(x => x.IdReports == id);
-                var general = db.Generals.FirstOrDefault(x => x.IdReports == id);
-                var discrepancies = db.Discrepancies.FirstOrDefault(x => x.IdReports == id);
-                if (check == null)
-                {
-                    if(general == null)
-                    {
-                        port = discrepancies.port;
-                    }
-                    else
-                    {
-                        port = general.port;
-                    }
-                }
-                else
-                {
-                    port = check.port;
-                }
 
+                port = checkPort(id);
                 if (string.IsNullOrEmpty(port))
                 {
                     return Json(new { code = 200, url = "/FunctionOrder/RescanAll",status = false }, JsonRequestBehavior.AllowGet);
@@ -128,7 +113,8 @@ namespace Zebra_RFID_Scanner.Controllers
                                {
                                    id = b.Id,
                                    createDate = b.CreateDate,
-                                   createBy = b.CreateBy
+                                   createBy = b.CreateBy,
+                                 
                                }).ToList();
                 if (name != "" && date != "")
                 {
@@ -147,7 +133,6 @@ namespace Zebra_RFID_Scanner.Controllers
                         return Json(new { code = 200, reports = reportss }, JsonRequestBehavior.AllowGet);
                     }
                 }
-
                 return Json(new { code = 200, reports = reports }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -155,7 +140,25 @@ namespace Zebra_RFID_Scanner.Controllers
                 return Json(new { code = 500, msg = rm.GetString("false") + " " + e.Message }, JsonRequestBehavior.AllowGet);
             }
         }
-
+        [HttpGet]
+        public JsonResult UnconfirmedReportsToSearch(string search)
+        {
+            try
+            {
+                var reports = (from b in db.Reports.Where(x => x.Status == false)
+                               select new
+                               {
+                                   id = b.Id,
+                                   createDate = b.CreateDate,
+                                   createBy = b.CreateBy,
+                               }).ToList().Where(x=>x.id.Contains(search));
+                return Json(new { code = 200, reports = reports }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { code = 500, msg = rm.GetString("false") + " " + e.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
         [HttpGet]
         public JsonResult confirmedReports(string name, string date)
         {
@@ -350,7 +353,8 @@ namespace Zebra_RFID_Scanner.Controllers
                     sku = sku,
                     modifyDate = modifyDate,
                     Consignee = Consignee,
-                    Shipper = Shipper
+                    Shipper = Shipper,
+                    TotalPages = pages,
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -363,6 +367,7 @@ namespace Zebra_RFID_Scanner.Controllers
         {
             try
             {
+                string port = "";
                 int pageSize = 1000;
                 var createDates = db.Reports.SingleOrDefault(x => x.Id == id).CreateDate;
                 var modifyDates = db.Reports.SingleOrDefault(x => x.Id == id).ModifyDate;
@@ -374,6 +379,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 var po = db.Reports.SingleOrDefault(x => x.Id == id).Po;
                 var so = db.Reports.SingleOrDefault(x => x.Id == id).So;
                 var sku = db.Reports.SingleOrDefault(x => x.Id == id).Sku;
+                port = checkPort(id);
                 var discrepancies = (from a in db.Discrepancies.Where(x => x.IdReports == id)
                                      select new
                                      {
@@ -412,7 +418,8 @@ namespace Zebra_RFID_Scanner.Controllers
                     modifyDate = modifyDate,
                     Consignee = Consignee,
                     Shipper = Shipper,
-                    totalPages = totalPages
+                    totalPages = totalPages,
+                    fileCsv= port==null?"":port.ToString(),
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -512,7 +519,7 @@ namespace Zebra_RFID_Scanner.Controllers
         {
             try
             {
-                int pageSize = 1000;
+                int pageSize = 2000;
                 var createDates = db.Reports.SingleOrDefault(x => x.Id == id).CreateDate;
                 var modifyDates = db.Reports.SingleOrDefault(x => x.Id == id).ModifyDate;
                 var createDate = createDates.Value.Day + "-" + createDates.Value.Month + "-" + createDates.Value.Year + " " + createDates.Value.Hour + ":" + createDates.Value.Minute;
@@ -1899,6 +1906,28 @@ namespace Zebra_RFID_Scanner.Controllers
                 }
             }
             return totalQTY;
+        }
+
+        public string checkPort(string id)
+        {
+            var check = db.EPCDiscrepancies.FirstOrDefault(x => x.IdReports == id);
+            var general = db.Generals.FirstOrDefault(x => x.IdReports == id);
+            var discrepancies = db.Discrepancies.FirstOrDefault(x => x.IdReports == id);
+            if (check == null)
+            {
+                if (general == null)
+                {
+                    return discrepancies.port;
+                }
+                else
+                {
+                    return general.port;
+                }
+            }
+            else
+            {
+                return check.port;
+            }
         }
         public string epctoupc(string epc)
         {

@@ -141,7 +141,7 @@
                             <th>PO</th>
                             <th>SKU</th>
                             <th>Carton No</th>
-                            <th>UPC</th>
+                            @*<th>UPC</th>*@
                             <th>QTY</th>
                             <th>Status</th>
                         </tr>
@@ -239,7 +239,7 @@
         function showFile(data) {
             try {
                 const Consignee = data[0]["Consignee"] == undefined ? "" : data[0]["Consignee"].toString().trim();
-                const Shipper = data[0]["Shipper"] == undefined ? data[0]["shipperCode"].toString().trim() : data[0]["Shipper"].toString().trim();
+                const Shipper = data[0]["Shipper"] == undefined ? (data[0]["shipperCode"] == undefined ? "" : data[0]["shipperCode"].toString().trim()) : data[0]["Shipper"].toString().trim();
                 localStorage.setItem('Consignee', Consignee );
                 localStorage.setItem('Shipper', Shipper);
 
@@ -254,10 +254,10 @@
                         arrayCTN[cartontoval] = [epc]
                         var tbd = `<tr data-status="">
                         <td>${data[i]["SOnumber"].toString().trim()}</td>
-                        <td>${data[i]["PO"].toString().trim()}</td>
+                        <td>${data[i]["doNo"].toString().trim()}</td>
                         <td>${data[i]["SKU"].toString().trim()}</td>
                         <td data-ctn="${cartontoval}" data-so="${data[i]["SOnumber"].toString().trim()}">${cartontoval}</td>
-                        <td>${data[i]["UPC"].toString().trim()}</td>
+   
                         <td data-qty="${cartontoval}">1</td></tr>`
                         $('#scanCT').append(tbd)
                     }
@@ -266,7 +266,7 @@
                     } else {
                         arrayInfoPreASN.push({
                             "so": data[i]["SOnumber"].toString().trim(),
-                            "po": data[i]["PO"].toString().trim(),
+                            "po": data[i]["doNo"].toString().trim(),
                             "sku": data[i]["SKU"].toString().trim(),
                             "ctn": [cartontoval.toString().trim()],
                             "qty": 1,
@@ -274,20 +274,20 @@
                         So += data[i]["SOnumber"].toString().trim() + "-";
                         Result += `<div>${data[i]["SOnumber"].toString().trim()} Scanned <span name="${data[i]["SOnumber"].toString().trim()}">0</span></div>`;
                     }
-                    if (Po.includes(data[i]["PO"].toString().trim())) {
+                    if (Po.includes(data[i]["doNo"].toString().trim())) {
 
                     } else {
-                        Po += data[i]["PO"].toString().trim() + "-"
+                        Po += data[i]["doNo"].toString().trim() + "-"
                     }
                     if (Sku.includes(data[i]["SKU"].toString().trim())) {
 
                     } else {
                         Sku += data[i]["SKU"].toString().trim() + "-"
                     }
-                    if (!hasUpc(arrayInfo, data[i]["UPC"].toString().trim())) {
+                    if (!hasUpc(arrayInfo, data[i]["cntNo"].toString().trim())) {
                         arrayInfo.push({
-                            "upc": data[i]["UPC"].toString().trim(),
-                            "Po": data[i]["PO"].toString().trim(),
+                            "upc": data[i]["cntNo"].toString().trim(),
+                            "Po": data[i]["doNo"].toString().trim(),
                             "So": data[i]["SOnumber"].toString().trim(),
                             "SKU": data[i]["SKU"].toString().trim()
                         })
@@ -306,7 +306,7 @@
                 $('#result').append(Result)
                 autoXML(selectSo)
             } catch (e) {
-                 toastr.error(e, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
+                 toastr.error(e+" Line "+i, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
             }
         }
 
@@ -431,39 +431,47 @@
 
         function next() {
             var datas = JSON.parse(localStorage.getItem('data'));
-            
             var tr = $('#scanCT').children()
             for (let i = 0; i < tr.length;i++) {
-                if (tr.eq(i).css("background-color") == /*"rgb(0, 128, 0)"*/"rgba(0, 0, 0, 0)") {
-                
+                if (tr.eq(i).css("background-color") == "rgb(0, 128, 0)"/*"rgba(0, 0, 0, 0)"*/) {
                     arrayData.push({
                         "So": tr.eq(i).children().eq(0).text().trim(),
                         "PO": tr.eq(i).children().eq(1).text().trim(),
                         "Carton to": tr.eq(i).children().eq(3).text().trim(),
-                        "UPC": tr.eq(i).children().eq(4).text().trim(),
-                        "Qty": tr.eq(i).children().eq(5).text().trim(),
+                        "UPC": tr.eq(i).children().eq(3).text().trim(),
+                        "Qty": tr.eq(i).children().eq(4).text().trim(),
                         "Sku": tr.eq(i).children().eq(2).text().trim(),
                         "status": false,
                         "qtyscan": 0,
-                        "cntry": getInfoUQ(datas, tr.eq(i).children().eq(4).text().trim(), tr.eq(i).children().eq(3).text().trim()).cntry,
-                        "port": getInfoUQ(datas, tr.eq(i).children().eq(4).text().trim(), tr.eq(i).children().eq(3).text().trim()).dptPortCd,
+                        "cntry": getInfoUQ(datas, tr.eq(i).children().eq(3).text().trim()).cntry,
+                        "port": getInfoUQ(datas, tr.eq(i).children().eq(3).text().trim()).dptPortCd,
                         "deviceNum":"",
-                        "doNo": getInfoUQ(datas, tr.eq(i).children().eq(4).text().trim(), tr.eq(i).children().eq(3).text().trim()).doNo,
-                        "setCd": getInfoUQ(datas, tr.eq(i).children().eq(4).text().trim(), tr.eq(i).children().eq(3).text().trim()).setCd,
-                        "subDoNo": datas[0].subDoNo == undefined ? "" : getInfoUQ(datas, tr.eq(i).children().eq(4).text().trim(), tr.eq(i).children().eq(3).text().trim()).subDoNo,
-                        "mngFctryCd": getInfoUQ(datas, tr.eq(i).children().eq(4).text().trim(), tr.eq(i).children().eq(3).text().trim()).mngFctryCd,
-                        "facBranchCd": getInfoUQ(datas, tr.eq(i).children().eq(4).text().trim(), tr.eq(i).children().eq(3).text().trim()).facBranchCd,
-                        "packKey": getInfoUQ(datas, tr.eq(i).children().eq(4).text().trim(), tr.eq(i).children().eq(3).text().trim()).packKey,
+                        "doNo": getInfoUQ(datas,tr.eq(i).children().eq(3).text().trim()).doNo,
+                        "setCd": getInfoUQ(datas,  tr.eq(i).children().eq(3).text().trim()).setCd,
+                        "subDoNo": datas[0].subDoNo == undefined ? "" : getInfoUQ(datas, tr.eq(i).children().eq(3).text().trim()).subDoNo,
+                        //"mngFctryCd": getInfoUQ(datas, tr.eq(i).children().eq(3).text().trim()).mngFctryCd,
+                        //"facBranchCd": getInfoUQ(datas,  tr.eq(i).children().eq(3).text().trim()).facBranchCd,
+                        "packKey": getInfoUQ(datas,  tr.eq(i).children().eq(3).text().trim()).packKey,
                     })
                 } else {
                     arrayErrorCtn.push({
                         "So": tr.eq(i).children().eq(0).text().trim(),
                         "PO": tr.eq(i).children().eq(1).text().trim(),
                         "Carton to": tr.eq(i).children().eq(3).text().trim(),
-                        "UPC": tr.eq(i).children().eq(4).text().trim(),
-                        "Qty": tr.eq(i).children().eq(5).text().trim(),
+                        "UPC": tr.eq(i).children().eq(3).text().trim(),
+                        "Qty": tr.eq(i).children().eq(4).text().trim(),
                         "Sku": tr.eq(i).children().eq(2).text().trim(),
-                        "status": false
+                        "status": false,
+                        "qtyscan": 0,
+                        "cntry": getInfoUQ(datas, tr.eq(i).children().eq(3).text().trim()).cntry,
+                        "port": getInfoUQ(datas, tr.eq(i).children().eq(3).text().trim()).dptPortCd,
+                        "deviceNum": "",
+                        "doNo": getInfoUQ(datas, tr.eq(i).children().eq(3).text().trim()).doNo,
+                        "setCd": getInfoUQ(datas, tr.eq(i).children().eq(3).text().trim()).setCd,
+                        "subDoNo": datas[0].subDoNo == undefined ? "" : getInfoUQ(datas, tr.eq(i).children().eq(3).text().trim()).subDoNo,
+                        //"mngFctryCd": getInfoUQ(datas, tr.eq(i).children().eq(3).text().trim()).mngFctryCd,
+                        //"facBranchCd": getInfoUQ(datas,  tr.eq(i).children().eq(3).text().trim()).facBranchCd,
+                        "packKey": getInfoUQ(datas, tr.eq(i).children().eq(3).text().trim()).packKey,
                     })
                 }
             }
@@ -486,7 +494,7 @@
                 }
                 tbd += `<tr name="${idqty}">
                         <td>${data[j]["Carton to"].toString().trim()}</td>
-                        <td>${data[j]["UPC"].toString().trim()}</td>
+                        <td>${data[j]["Carton to"].toString().trim()}</td>
                         <td>${data[j]["Qty"].toString().trim()}</td></tr>`
                 
             }
@@ -557,7 +565,7 @@
                         if (hasUpc(arrayGeneral, upc)) {
                             updateStatusTrue(arrayGeneral, upc)
                         } else {
-                            arrayGeneral.push({"upc": upc, "qty": qtyUpc, "qtyScan": Number(totalUpc) + 1, "status": true, "ctn": getCtn(arrayData, upc) })
+                            arrayGeneral.push({ "upc": upc, "qty": qtyUpc, "qtyScan": Number(totalUpc) + 1, "status": true, "ctn": upc })
                         }
                         $(`#total${upc}`).closest('tr').css('background', 'green')//background xanh neu du sl
                         $(`#status${upc}`).text('Matched')
@@ -569,7 +577,7 @@
                         if (hasUpc(arrayGeneral, upc)) {
                             updateQtyScan(arrayGeneral, upc)
                         } else {
-                            arrayGeneral.push({ "upc": upc, "qty": qtyUpc, "qtyScan": Number(totalUpc) + 1, "status": false, "ctn": getCtn(arrayData, upc) })
+                            arrayGeneral.push({ "upc": upc, "qty": qtyUpc, "qtyScan": Number(totalUpc) + 1, "status": false, "ctn": upc })
                         }
                         $(`#total${upc}`).closest('tr').css('background', 'red')//background do neu vuot qua sl
                         $(`#status${upc}`).text('Mismatched')
@@ -650,12 +658,14 @@
                     }
 
                     return result;
-                }, []);
+                    }, []);
+               
                 var differentElements = compareArrays(arrayCTN, symmetricalKeys);
                 differentElements = differentElements.filter(function (obj) {
                     // Kiểm tra giá trị của mỗi key, nếu không rỗng thì giữ lại
                     return Object.values(obj).length !== 0;
                 });
+                
                 var EPCDiscrepancys = [];
                 differentElements.forEach(function (obj) {
                     var key = Object.keys(obj);
@@ -665,19 +675,19 @@
                         EPCDiscrepancys.push({
                             Carton: key[0],
                             Id: value,
-                            So: getInfo(arrayInfo, epctoUPC(value)).So,
-                            Po: getInfo(arrayInfo, epctoUPC(value)).Po,
-                            SKU: getInfo(arrayInfo, epctoUPC(value)).SKU,
+                            So: getInfo(arrayInfo, key[0]).So,
+                            Po: getInfo(arrayInfo, key[0]).Po,
+                            SKU: getInfo(arrayInfo, key[0]).SKU,
                             UPC: epctoUPC(value),
-                            "cntry": getInfoUQ(datas, epctoUPC(value), key[0]).cntry,
-                            "port": getInfoUQ(datas, epctoUPC(value), key[0]).dptPortCd,
+                            "cntry": getInfoUQ(datas, key[0]).cntry,
+                            "port": getInfoUQ(datas, key[0]).dptPortCd,
                             "deviceNum": "",
-                            "doNo": getInfoUQ(datas, epctoUPC(value), key[0]).doNo,
-                            "setCd": getInfoUQ(datas, epctoUPC(value), key[0]).setCd,
-                            "subDoNo": datas[0].subDoNo == undefined ? "" : getInfoUQ(datas, epctoUPC(value), key[0]).subDoNo,
-                            "mngFctryCd": getInfoUQ(datas, epctoUPC(value), key[0]).mngFctryCd,
-                            "facBranchCd": getInfoUQ(datas, epctoUPC(value), key[0]).facBranchCd,
-                            "packKey": getInfoUQ(datas, epctoUPC(value), key[0]).packKey,
+                            "doNo": getInfoUQ(datas,  key[0]).doNo,
+                            "setCd": getInfoUQ(datas, key[0]).setCd,
+                            "subDoNo": datas[0].subDoNo == undefined ? "" : getInfoUQ(datas, key[0]).subDoNo,
+                            "mngFctryCd": getInfoUQ(datas,  key[0]).mngFctryCd,
+                            "facBranchCd": getInfoUQ(datas,  key[0]).facBranchCd,
+                            "packKey": getInfoUQ(datas, key[0]).packKey,
                         });
                     });
                 });
@@ -701,7 +711,7 @@
                     var info = JSON.stringify(arrayInfo)
                     var Consignee = localStorage.getItem('Consignee').toString().trim()
                     var Shipper = localStorage.getItem('Shipper').toString().trim()
-                    console.log(idReports, Ctn, ctnError, epcToUpc, Po, So, Sku, info, Consignee, Shipper, TimeStart, EPCDiscrepancy); return;
+                   /* console.log(idReports, Ctn, ctnError, epcToUpc, Po, So, Sku, info, Consignee, Shipper, TimeStart, EPCDiscrepancy); return;*/
                     $.ajax({
                         url: '/Home/Save',
                         type: 'post',
@@ -790,20 +800,20 @@
                                                 arrayReportsEpcToUpc.push({
                                                     "EPC": v.epc,
                                                     "IdReports": idReports,
-                                                    "So": getInfo(arrayInfo, epctoUPC(v.epc)).So,
-                                                    "Po": getInfo(arrayInfo, epctoUPC(v.epc)).Po,
-                                                    "SKU": getInfo(arrayInfo, epctoUPC(v.epc)).SKU,
+                                                    "So": getInfo(arrayInfo, findKeyByArrayValue(arrayCTN, v.epc)).So,
+                                                    "Po": getInfo(arrayInfo, findKeyByArrayValue(arrayCTN, v.epc)).Po,
+                                                    "SKU": getInfo(arrayInfo, findKeyByArrayValue(arrayCTN, v.epc)).SKU,
                                                     "UPC": epctoUPC(v.epc),
                                                     "CartonTo": findKeyByArrayValue(arrayCTN, v.epc),
-                                                    "cntry": getInfoUQ(datas, epctoUPC(v.epc), findKeyByArrayValue(arrayCTN, v.epc)).cntry,
-                                                    "port": getInfoUQ(datas, epctoUPC(v.epc), findKeyByArrayValue(arrayCTN, v.epc)).dptPortCd,
+                                                    "cntry": getInfoUQ(datas,  findKeyByArrayValue(arrayCTN, v.epc)).cntry,
+                                                    "port": getInfoUQ(datas, findKeyByArrayValue(arrayCTN, v.epc)).dptPortCd,
                                                     "deviceNum": "",
-                                                    "doNo": getInfoUQ(datas, epctoUPC(v.epc), findKeyByArrayValue(arrayCTN, v.epc)).doNo,
-                                                    "setCd": getInfoUQ(datas, epctoUPC(v.epc), findKeyByArrayValue(arrayCTN, v.epc)).setCd,
-                                                    "subDoNo": datas[0].subDoNo == undefined ? "" : getInfoUQ(datas, epctoUPC(v.epc), findKeyByArrayValue(arrayCTN, v.epc)).subDoNo,
-                                                    "mngFctryCd": getInfoUQ(datas, epctoUPC(v.epc), findKeyByArrayValue(arrayCTN, v.epc)).mngFctryCd,
-                                                    "facBranchCd": getInfoUQ(datas, epctoUPC(v.epc), findKeyByArrayValue(arrayCTN, v.epc)).facBranchCd,
-                                                    "packKey": getInfoUQ(datas, epctoUPC(v.epc), findKeyByArrayValue(arrayCTN, v.epc)).packKey,
+                                                    "doNo": getInfoUQ(datas, findKeyByArrayValue(arrayCTN, v.epc)).doNo,
+                                                    "setCd": getInfoUQ(datas,  findKeyByArrayValue(arrayCTN, v.epc)).setCd,
+                                                    "subDoNo": datas[0].subDoNo == undefined ? "" : getInfoUQ(datas,  findKeyByArrayValue(arrayCTN, v.epc)).subDoNo,
+                                                    "mngFctryCd": getInfoUQ(datas, findKeyByArrayValue(arrayCTN, v.epc)).mngFctryCd,
+                                                    "facBranchCd": getInfoUQ(datas, findKeyByArrayValue(arrayCTN, v.epc)).facBranchCd,
+                                                    "packKey": getInfoUQ(datas,  findKeyByArrayValue(arrayCTN, v.epc)).packKey,
                                                 })
                                                 var tbd = `<tr>
                                             <td>${sl}</td>
@@ -890,9 +900,8 @@
         }
 
         //kiem tra mang co upc chưa
-        function getInfoUQ(arr, upc, ctn) {
+        function getInfoUQ(arr, ctn) {
             const foundElement = arr.find(element =>
-                element.UPC.toString().trim() === upc.toString().trim() &&
                 element.cntNo.toString().trim() === ctn.toString().trim()
             );
 

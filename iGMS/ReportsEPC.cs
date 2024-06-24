@@ -29,6 +29,7 @@ namespace Zebra_RFID_Scanner.Controllers
         public string C19 { get; set; }
         public string C20 { get; set; }
         public string C21 { get; set; }
+        public int subDoNo { get; set; }
     }
     public class totalQTY
     {

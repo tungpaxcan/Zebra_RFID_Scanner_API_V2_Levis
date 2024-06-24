@@ -239,7 +239,11 @@ namespace Zebra_RFID_Scanner.Controllers
                     // Áp dụng hàm sửa đổi lên mỗi bản ghi ở đây
                     record.CreateDate = DateTime.Now;
                     record.CreateBy = nameUser;
-                    record.deviceNum = user.FXconnect.Name;
+                    if (string.IsNullOrEmpty(record.deviceNum))
+                    {
+                        record.deviceNum = user.FXconnect?.Name; // Sử dụng ?. để tránh lỗi null reference nếu user.FXconnect là null
+                    }
+                    record.Status = true;
                 });
                 db.Data.AddRange(epcToUpcs);
                 EPCDiscrepancys.ForEach(record =>
@@ -249,7 +253,10 @@ namespace Zebra_RFID_Scanner.Controllers
                     record.CreateBy = nameUser;
                     record.IdReports = idReports;
                     record.Status = true;
-                    record.deviceNum = user.FXconnect.Name;
+                    if (string.IsNullOrEmpty(record.deviceNum))
+                    {
+                        record.deviceNum = user.FXconnect?.Name; // Sử dụng ?. để tránh lỗi null reference nếu user.FXconnect là null
+                    }
                 });
                 db.EPCDiscrepancies.AddRange(EPCDiscrepancys);
                 Ctns.ForEach(record =>
@@ -277,7 +284,10 @@ namespace Zebra_RFID_Scanner.Controllers
                     record.IdReports = idReports;
                     record.CreateDate = DateTime.Now;
                     record.CreateBy = nameUser;
-                    record.deviceNum = user.FXconnect.Name;
+                    if (string.IsNullOrEmpty(record.deviceNum))
+                    {
+                        record.deviceNum = user.FXconnect?.Name; // Sử dụng ?. để tránh lỗi null reference nếu user.FXconnect là null
+                    }
                 });
                 db.Generals.AddRange(generals.Where(item => item.Status == true));
                 discrepancy.ForEach(record =>
@@ -290,7 +300,10 @@ namespace Zebra_RFID_Scanner.Controllers
                     record.IdReports = idReports;
                     record.CreateDate = DateTime.Now;
                     record.CreateBy = nameUser;
-                    record.deviceNum = user.FXconnect.Name;
+                    if (string.IsNullOrEmpty(record.deviceNum))
+                    {
+                        record.deviceNum = user.FXconnect?.Name; // Sử dụng ?. để tránh lỗi null reference nếu user.FXconnect là null
+                    }
                 });
                 db.Discrepancies.AddRange(discrepancy.Where(item => item.Status == false));
 
@@ -399,12 +412,24 @@ namespace Zebra_RFID_Scanner.Controllers
                 var infos = JsonConvert.DeserializeObject<Gerenal.gerenal[]>(info);
                 Dele.DeleteDiscrepancies(idReports);
                 Dele.DeleteGenerals(idReports);
+                foreach(var item in Ctns)
+                {
+                    var carton = db.DataScanPhysicals.FirstOrDefault(x => x.CartonTo == item.CartonTo && x.IdReports == idReports && x.Status == false);
+                    if(carton != null)
+                    {
+                        carton.Status = true;
+                    }
+                }
                 epcToUpcs.ForEach(record =>
                 {
                     // Áp dụng hàm sửa đổi lên mỗi bản ghi ở đây
                     record.CreateDate = DateTime.Now;
                     record.CreateBy = nameUser;
-                    record.deviceNum = user.FXconnect.Name;
+                    record.Status = true;
+                    if (string.IsNullOrEmpty(record.deviceNum))
+                    {
+                        record.deviceNum = user.FXconnect?.Name; // Sử dụng ?. để tránh lỗi null reference nếu user.FXconnect là null
+                    }
                 });
                 db.Data.AddRange(epcToUpcs);
 
@@ -414,7 +439,10 @@ namespace Zebra_RFID_Scanner.Controllers
                     record.IdReports = idReports;
                     record.CreateDate = DateTime.Now;
                     record.CreateBy = nameUser;
-                    record.deviceNum = user.FXconnect.Name;
+                    if (string.IsNullOrEmpty(record.deviceNum))
+                    {
+                        record.deviceNum = user.FXconnect?.Name; // Sử dụng ?. để tránh lỗi null reference nếu user.FXconnect là null
+                    }
                 });
                 db.Generals.AddRange(generals.Where(item => item.Status == true));
                 discrepancy.ForEach(record =>
@@ -423,7 +451,10 @@ namespace Zebra_RFID_Scanner.Controllers
                     record.IdReports = idReports;
                     record.CreateDate = DateTime.Now;
                     record.CreateBy = nameUser;
-                    record.deviceNum = user.FXconnect.Name;
+                    if (string.IsNullOrEmpty(record.deviceNum))
+                    {
+                        record.deviceNum = user.FXconnect?.Name; // Sử dụng ?. để tránh lỗi null reference nếu user.FXconnect là null
+                    }
                 });
                 db.Discrepancies.AddRange(discrepancy.Where(item => item.Status == false));
                 foreach(var item in epcToUpcs)
