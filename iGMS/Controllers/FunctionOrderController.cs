@@ -222,9 +222,9 @@ namespace Zebra_RFID_Scanner.Controllers
 
                             string doNo = recordDict.Keys.ToArray()[0].ToString().Trim();
                             string subDoNo = recordDict.Keys.ToArray()[1].ToString().Trim();
-                            //string mngFctryCd = recordDict.Keys.ToArray()[2].ToString().Trim();
-                            //string facBranchCd = recordDict.Keys.ToArray()[3].ToString().Trim();
-                            //string shipperCode = recordDict.Keys.ToArray()[4].ToString().Trim();
+                            string mngFctryCd = recordDict.Keys.ToArray()[2].ToString().Trim();
+                            string facBranchCd = recordDict.Keys.ToArray()[3].ToString().Trim();
+                            string shipperCode = recordDict.Keys.ToArray()[4].ToString().Trim();
                             string setCd = recordDict.Keys.ToArray()[2].ToString().Trim();
                             string cntNo = recordDict.Keys.ToArray()[3].ToString().Trim();
                             string yr = recordDict.Keys.ToArray()[4].ToString().Trim();
@@ -237,9 +237,9 @@ namespace Zebra_RFID_Scanner.Controllers
 
                             if (doNo != "doNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " doNo"); }
                             else if (subDoNo != "subDoNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " subDoNo"); }
-                            //else if (mngFctryCd != "mngFctryCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " mngFctryCd"); }
-                            //else if (facBranchCd != "facBranchCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " facBranchCd"); }
-                            //else if (shipperCode != "shipperCode") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " shipperCode"); }
+                            else if (mngFctryCd != "mngFctryCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " mngFctryCd"); }
+                            else if (facBranchCd != "facBranchCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " facBranchCd"); }
+                            else if (shipperCode != "shipperCode") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " shipperCode"); }
                             else if (setCd != "setCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " setCd"); }
                             else if (cntNo != "cntNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " cntNo"); }
                             else if (yr != "yr") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " yr"); }
