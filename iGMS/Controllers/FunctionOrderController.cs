@@ -225,15 +225,15 @@ namespace Zebra_RFID_Scanner.Controllers
                             string mngFctryCd = recordDict.Keys.ToArray()[2].ToString().Trim();
                             string facBranchCd = recordDict.Keys.ToArray()[3].ToString().Trim();
                             string shipperCode = recordDict.Keys.ToArray()[4].ToString().Trim();
-                            string setCd = recordDict.Keys.ToArray()[2].ToString().Trim();
-                            string cntNo = recordDict.Keys.ToArray()[3].ToString().Trim();
-                            string yr = recordDict.Keys.ToArray()[4].ToString().Trim();
-                            string ssnCd = recordDict.Keys.ToArray()[5].ToString().Trim();
-                            string dptPortCd = recordDict.Keys.ToArray()[6].ToString().Trim();
-                            string cntry = recordDict.Keys.ToArray()[7].ToString().Trim();
-                            string exf = recordDict.Keys.ToArray()[8].ToString().Trim();
-                            string packKey = recordDict.Keys.ToArray()[9].ToString().Trim();
-                            string epc = recordDict.Keys.ToArray()[10].ToString().Trim();
+                            string setCd = recordDict.Keys.ToArray()[5].ToString().Trim();
+                            string cntNo = recordDict.Keys.ToArray()[6].ToString().Trim();
+                            string yr = recordDict.Keys.ToArray()[7].ToString().Trim();
+                            string ssnCd = recordDict.Keys.ToArray()[8].ToString().Trim();
+                            string dptPortCd = recordDict.Keys.ToArray()[9].ToString().Trim();
+                            string cntry = recordDict.Keys.ToArray()[10].ToString().Trim();
+                            string exf = recordDict.Keys.ToArray()[11].ToString().Trim();
+                            string packKey = recordDict.Keys.ToArray()[12].ToString().Trim();
+                            string epc = recordDict.Keys.ToArray()[13].ToString().Trim();
 
                             if (doNo != "doNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " doNo"); }
                             else if (subDoNo != "subDoNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " subDoNo"); }
