@@ -333,6 +333,7 @@
     <Compile Include="Controllers\PreASN.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\ReportsUNIQLOController.cs" />
     <Compile Include="Controllers\RFIDController.cs" />
     <Compile Include="Controllers\Root.cs" />
     <Compile Include="Controllers\SendReportController.cs" />
@@ -2481,6 +2482,7 @@
     <Content Include="Views\Home\Index2.cshtml" />
     <Content Include="Views\FunctionOrder\RescanAll2.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\HOD\Uniqlo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2488,6 +2490,7 @@
     <Folder Include="PreASN\" />
     <Folder Include="Views\Api\" />
     <Folder Include="Views\Default\" />
+    <Folder Include="Views\ReportsUNIQLO\" />
     <Folder Include="Views\Reports\" />
     <Folder Include="Views\SendReport\" />
   </ItemGroup>

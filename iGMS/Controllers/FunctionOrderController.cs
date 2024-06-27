@@ -16,13 +16,19 @@ using CsvHelper;
 using System.Globalization;
 using System.Data;
 using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.VariantTypes;
+using static Zebra_RFID_Scanner.Controllers.EPCTOUPC;
 
 namespace Zebra_RFID_Scanner.Controllers
 {
     public class FunctionOrderController : BaseController
     {
+
         private Entities db = new Entities();
         ResourceManager rm = new ResourceManager("Zebra_RFID_Scanner.Resources.Resource", typeof(Resources.Resource).Assembly);
+
         // GET: FunctionOrder
         public ActionResult Index()
         {
@@ -212,57 +218,57 @@ namespace Zebra_RFID_Scanner.Controllers
                             }
                         }
                     }
-                    else if (extensionFile == "csv")
-                    {
-                        using (var reader = new StreamReader(file))
-                        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                        {
-                            var records = csv.GetRecords<dynamic>().ToList();
-                            var recordDict = (IDictionary<string, object>)records[0];
+                    //else if (extensionFile == "csv")
+                    //{
+                    //    using (var reader = new StreamReader(file))
+                    //    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    //    {
+                    //        var records = csv.GetRecords<dynamic>().ToList();
+                    //        var recordDict = (IDictionary<string, object>)records[0];
 
-                            string doNo = recordDict.Keys.ToArray()[0].ToString().Trim();
-                            string subDoNo = recordDict.Keys.ToArray()[1].ToString().Trim();
-                            string mngFctryCd = recordDict.Keys.ToArray()[2].ToString().Trim();
-                            string facBranchCd = recordDict.Keys.ToArray()[3].ToString().Trim();
-                            string shipperCode = recordDict.Keys.ToArray()[4].ToString().Trim();
-                            string setCd = recordDict.Keys.ToArray()[5].ToString().Trim();
-                            string cntNo = recordDict.Keys.ToArray()[6].ToString().Trim();
-                            string yr = recordDict.Keys.ToArray()[7].ToString().Trim();
-                            string ssnCd = recordDict.Keys.ToArray()[8].ToString().Trim();
-                            string dptPortCd = recordDict.Keys.ToArray()[9].ToString().Trim();
-                            string cntry = recordDict.Keys.ToArray()[10].ToString().Trim();
-                            string exf = recordDict.Keys.ToArray()[11].ToString().Trim();
-                            string packKey = recordDict.Keys.ToArray()[12].ToString().Trim();
-                            string epc = recordDict.Keys.ToArray()[13].ToString().Trim();
+                    //        string doNo = recordDict.Keys.ToArray()[0].ToString().Trim();
+                    //        string subDoNo = recordDict.Keys.ToArray()[1].ToString().Trim();
+                    //        string mngFctryCd = recordDict.Keys.ToArray()[2].ToString().Trim();
+                    //        string facBranchCd = recordDict.Keys.ToArray()[3].ToString().Trim();
+                    //        string shipperCode = recordDict.Keys.ToArray()[4].ToString().Trim();
+                    //        string setCd = recordDict.Keys.ToArray()[5].ToString().Trim();
+                    //        string cntNo = recordDict.Keys.ToArray()[6].ToString().Trim();
+                    //        string yr = recordDict.Keys.ToArray()[7].ToString().Trim();
+                    //        string ssnCd = recordDict.Keys.ToArray()[8].ToString().Trim();
+                    //        string dptPortCd = recordDict.Keys.ToArray()[9].ToString().Trim();
+                    //        string cntry = recordDict.Keys.ToArray()[10].ToString().Trim();
+                    //        string exf = recordDict.Keys.ToArray()[11].ToString().Trim();
+                    //        string packKey = recordDict.Keys.ToArray()[12].ToString().Trim();
+                    //        string epc = recordDict.Keys.ToArray()[13].ToString().Trim();
 
-                            if (doNo != "doNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " doNo"); }
-                            else if (subDoNo != "subDoNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " subDoNo"); }
-                            else if (mngFctryCd != "mngFctryCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " mngFctryCd"); }
-                            else if (facBranchCd != "facBranchCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " facBranchCd"); }
-                            else if (shipperCode != "shipperCode") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " shipperCode"); }
-                            else if (setCd != "setCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " setCd"); }
-                            else if (cntNo != "cntNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " cntNo"); }
-                            else if (yr != "yr") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " yr"); }
-                            else if (ssnCd != "ssnCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " ssnCd"); }
-                            else if (dptPortCd != "dptPortCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " dptPortCd"); }
-                            else if (cntry != "cntry") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " cntry"); }
-                            else if (exf != "exf") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " exf"); }
-                            else if (packKey != "packKey") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " packKey"); }
-                            else if (epc != "epc") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " epc"); }
-                            else
-                            {
-                                string sourceFilePath = @"C:\RFID\PreASN\" + name + "";
-                                string destinationFilePath = Server.MapPath("/PreASN/" + name + "");
-                                System.IO.File.Copy(sourceFilePath, destinationFilePath);
-                                PreASN.PreAsn pkl = new PreASN.PreAsn()
-                                {
-                                    Path = "/PreASN/" + name + "",
-                                    Name = name
-                                };
-                                pkls.Add(pkl);
-                            }
-                        }
-                    }
+                    //        if (doNo != "doNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " doNo"); }
+                    //        else if (subDoNo != "subDoNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " subDoNo"); }
+                    //        else if (mngFctryCd != "mngFctryCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " mngFctryCd"); }
+                    //        else if (facBranchCd != "facBranchCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " facBranchCd"); }
+                    //        else if (shipperCode != "shipperCode") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " shipperCode"); }
+                    //        else if (setCd != "setCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " setCd"); }
+                    //        else if (cntNo != "cntNo") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " cntNo"); }
+                    //        else if (yr != "yr") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " yr"); }
+                    //        else if (ssnCd != "ssnCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " ssnCd"); }
+                    //        else if (dptPortCd != "dptPortCd") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " dptPortCd"); }
+                    //        else if (cntry != "cntry") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " cntry"); }
+                    //        else if (exf != "exf") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " exf"); }
+                    //        else if (packKey != "packKey") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " packKey"); }
+                    //        else if (epc != "epc") { Rsl.Add(name + ": " + rm.GetString("formisnotinthecorrectformat").ToString() + " epc"); }
+                    //        else
+                    //        {
+                    //            string sourceFilePath = @"C:\RFID\PreASN\" + name + "";
+                    //            string destinationFilePath = Server.MapPath("/PreASN/" + name + "");
+                    //            System.IO.File.Copy(sourceFilePath, destinationFilePath);
+                    //            PreASN.PreAsn pkl = new PreASN.PreAsn()
+                    //            {
+                    //                Path = "/PreASN/" + name + "",
+                    //                Name = name
+                    //            };
+                    //            pkls.Add(pkl);
+                    //        }
+                    //    }
+                    //}
                 }
                 if (seach != "")
                 {
@@ -291,9 +297,25 @@ namespace Zebra_RFID_Scanner.Controllers
                 string hostApi = ConfigurationManager.ConnectionStrings["HostApi"].ConnectionString;
                 string port_code = Request.Form["portCode"];
                 string date = Request.Form["date"];
+                string device = Request.Form["device"];
+                string[] PO = new string[0];
                 if (string.IsNullOrEmpty(date) || string.IsNullOrEmpty(port_code))
                 {
                     return Json(new { code = 500, msg = rm.GetString("false").ToString() + " Not enough input to get data" }, JsonRequestBehavior.AllowGet);
+                }
+                var checkReport = db.Reports.FirstOrDefault(x => x.Id == port_code + "_" +date);
+                if (checkReport != null)
+                {
+                    if(device == "pc")
+                    {
+                        return Json(new { code = 500, msg = "The file already exists in the system" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        PO = checkReport.Po.Split(',');
+                        return Json(new { code = 200, PO, TypeStatus = true}, JsonRequestBehavior.AllowGet);
+                    }
+                    
                 }
                 Certificate2 cert = await ApiController.GetCertificate();
                 if (cert != null)
@@ -320,7 +342,7 @@ namespace Zebra_RFID_Scanner.Controllers
                                 string folderName = @"C:\RFID\PreASN\";
                                 string fileUrl = port_code + "_" + date + ".csv";
                                 await DownloadFileAsync(jsonResponse.Body, folderName, fileUrl);
-                                return Json(new { code = 200, msg = "Retrieve File successfully", fileUrl }, JsonRequestBehavior.AllowGet);
+                                return Json(new { code = 200, msg = "Retrieve File successfully", fileUrl,PO, TypeStatus = false }, JsonRequestBehavior.AllowGet);
                             }
                             else if (jsonResponse.StatusCode == 400)
                             {
@@ -354,11 +376,13 @@ namespace Zebra_RFID_Scanner.Controllers
 
         }
         ReportsController controller = new ReportsController();
+        HomeController Hcontroller = new HomeController();
 
         private async Task DownloadFileAsync(string fileUrl, string destinationFolder, string namePath)
         {
             try
             {
+               
                 List<List<string>> rows = new List<List<string>>();
                 Certificate2 cert = await ApiController.GetCertificate();
                 if (cert != null)
@@ -378,6 +402,9 @@ namespace Zebra_RFID_Scanner.Controllers
                         response.EnsureSuccessStatusCode();
                         if (response.IsSuccessStatusCode)
                         {
+                            List<Discrepancy> general = new List<Discrepancy>();
+                            List<EPCDiscrepancy> ePCDiscrepancies = new List<EPCDiscrepancy>();
+                            string Po = "";
                             using (var stream = await response.Content.ReadAsStreamAsync())
                             using (var reader = new StreamReader(stream))
                             {
@@ -397,9 +424,6 @@ namespace Zebra_RFID_Scanner.Controllers
                                 rowValuesHead.Add("exf");
                                 rowValuesHead.Add("packKey");
                                 rowValuesHead.Add("epc");
-                                rowValuesHead.Add("SOnumber");
-                                rowValuesHead.Add("PO");
-                                rowValuesHead.Add("SKU");
                                 rowValuesHead.Add("UPC");
                                 rows.Add(rowValuesHead);
                                 while (!reader.EndOfStream)
@@ -407,36 +431,74 @@ namespace Zebra_RFID_Scanner.Controllers
                                     var line = await reader.ReadLineAsync();
                                     var values = line.Split(',');
                                     List<string> rowValues = new List<string>(values);
-                                    //if (rowValues[0]== "doNo")
-                                    //{
-                                    //    rowValues[10] = "cntry";
-                                    //    rowValues[12] = "packKey";
-                                    //    // Thêm ba cột mới với giá trị "s"
-                                    //    rowValues.Add("SOnumber");
-                                    //    rowValues.Add("PO");
-                                    //    rowValues.Add("SKU");
-                                    //    rowValues.Add("UPC");
-                                    //}
-                                    //else
-                                    //{
-                                    //    // Thêm ba cột mới với giá trị "s"
-                                    //    rowValues.Add("s");
-                                    //    rowValues.Add("s");
-                                    //    rowValues.Add("s");
-                                    //    // Thêm giá trị tính toán từ controller.epctoupc() vào cột thứ 14 (index 13)
-                                    //    string computedValue = controller.epctoupc(rowValues[13]);
-                                    //    rowValues.Add(computedValue);
-                                    //}
-                                    rowValues.Add("s");
-                                    rowValues.Add("s");
                                     rowValues.Add("s");
                                     // Thêm giá trị tính toán từ controller.epctoupc() vào cột thứ 14 (index 13)
                                     string computedValue = controller.epctoupc(rowValues[13]);
+                                    string CartonTo = rowValues[6]?.ToString().Trim();
+                                    string EPC = rowValues[13]?.ToString().Trim();
+                                    string doNo = rowValues[0]?.ToString().Trim();
+                                    var checkD = general.FirstOrDefault(x=>x.CartonTo==CartonTo&&x.Po == doNo);
+                                    var checkE = ePCDiscrepancies.FirstOrDefault(x=>x.Id== EPC);
+                                    if (!Po.Contains(doNo)) { Po += "," + doNo; };
+                                    if (checkD==null) {
+                                        Discrepancy d = new Discrepancy()
+                                        {
+                                            So = "",
+                                            Po = doNo,
+                                            CartonTo = CartonTo,
+                                            UPC = CartonTo,
+                                            Qty = "1",
+                                            Sku = "",
+                                            Status = false,
+                                            QtyScan = "0",
+                                            cntry = rowValues[10]?.ToString().Trim(),
+                                            port = rowValues[9]?.ToString().Trim(),
+                                            deviceNum = "",
+                                            doNo = doNo,
+                                            setCd = rowValues[5]?.ToString().Trim(),
+                                            subDoNo = rowValues[1]?.ToString().Trim(),
+                                            mngFctryCd = rowValues[2]?.ToString().Trim(),
+                                            facBranchCd = rowValues[3]?.ToString().Trim(),
+                                            packKey = rowValues[12]?.ToString().Trim(),
+                                        };
+                                        general.Add(d);
+                                    }
+                                    else
+                                    {
+                                        checkD.Qty = (int.Parse(checkD.QtyScan) + 1).ToString();
+                                    }
+                                    if(checkE == null)
+                                    {
+                                        EPCDiscrepancy ePC = new EPCDiscrepancy()
+                                        {
+                                            Carton = CartonTo,
+                                            Id = EPC,
+                                            So = "",
+                                            Po = doNo,
+                                            Sku = "",
+                                            UPC = CartonTo,
+                                            cntry = rowValues[10]?.ToString().Trim(),
+                                            port = rowValues[9]?.ToString().Trim(),
+                                            deviceNum = "",
+                                            doNo = doNo,
+                                            setCd = rowValues[5]?.ToString().Trim(),
+                                            subDoNo = rowValues[1]?.ToString().Trim(),
+                                            mngFctryCd = rowValues[2]?.ToString().Trim(),
+                                            facBranchCd = rowValues[3]?.ToString().Trim(),
+                                            packKey = rowValues[12]?.ToString().Trim(),
+                                        };
+                                        ePCDiscrepancies.Add(ePC);
+                                    }
+                                   
+                                    
                                     rowValues.Add(computedValue);
                                     // Thêm hàng mới vào danh sách các hàng
                                     rows.Add(rowValues);
                                 }
                             }
+                            string Ctn = JsonConvert.SerializeObject(general);
+                            string EPCDiscrepancy = JsonConvert.SerializeObject(ePCDiscrepancies);
+                            Hcontroller.Save(namePath.Replace(".csv",""), "", Ctn, "", Po, "", "", "", "", "", "", EPCDiscrepancy);
                             // Ghi dữ liệu đã được mở rộng vào file CSV
                             using (var fileStream = new FileStream(destinationFolder + Path.GetFileName(namePath), FileMode.Create))
                             using (var writer = new StreamWriter(fileStream))

@@ -271,18 +271,18 @@
                             "ctn": [cartontoval.toString().trim()],
                             "qty": 1,
                         })
-                        So += data[i]["SOnumber"].toString().trim() + "-";
+                        So += data[i]["SOnumber"].toString().trim() + ",";
                         Result += `<div>${data[i]["SOnumber"].toString().trim()} Scanned <span name="${data[i]["SOnumber"].toString().trim()}">0</span></div>`;
                     }
                     if (Po.includes(data[i]["doNo"].toString().trim())) {
 
                     } else {
-                        Po += data[i]["doNo"].toString().trim() + "-"
+                        Po += data[i]["doNo"].toString().trim() + ","
                     }
                     if (Sku.includes(data[i]["SKU"].toString().trim())) {
 
                     } else {
-                        Sku += data[i]["SKU"].toString().trim() + "-"
+                        Sku += data[i]["SKU"].toString().trim() + ","
                     }
                     if (!hasUpc(arrayInfo, data[i]["cntNo"].toString().trim())) {
                         arrayInfo.push({
@@ -298,8 +298,8 @@
                 So = So.slice(0, -1)
                 Po = Po.slice(0, -1)
                 Sku = Sku.slice(0, -1)
-                var selectSo = So.split("-")
-                var selectPo = Po.split("-")
+                var selectSo = So.split(",")
+                var selectPo = Po.split(",")
                 $('#so').append(option(selectSo))
                 $('#po').append(option(selectPo))
                 $('#SONo').text(So)

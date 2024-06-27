@@ -15,6 +15,10 @@ namespace Zebra_RFID_Scanner.Controllers
         {
             return View();
         }
+        public ActionResult Uniqlo()
+        {
+            return View();
+        }
         [HttpPost]
         public JsonResult DeleteCtn(int id,string idName)
         {

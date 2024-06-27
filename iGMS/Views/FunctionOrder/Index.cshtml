@@ -99,6 +99,7 @@
         function getFileApi() {
             const form = document.getElementById("form");
             const formData = new FormData(form);
+            formData.append("device","pc")
             $.ajax({
                 url: 'functionorder/GetFileApi',
                 type: 'post',
@@ -269,7 +270,7 @@
             return $('#tbdscaner')[0].childNodes[prm]
         }
         //success set table
-        function successFunction(data,name) {
+        function successFunction(data, name) {
             localStorage.setItem('data', JSON.stringify(data));
             var type = false;
             if ("EPC" in data[0]||"epc" in data[0]) {
@@ -283,6 +284,7 @@
                 data: { name, type },
                 success: function (data) {
                     if (data.code == 200) {
+                       
                         window.location.href = data.url
                     }else if (data.code == "error") {
                                 toastr.error(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");

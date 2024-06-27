@@ -43,7 +43,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 var s1 = sumDate(date1);
                 var s2 = sumDate(date2);
                 var reports = (from b in db.Reports
-                               where b.Status == true
+                               where b.Status == true 
                                select new
                                {
                                    id = b.Id,
@@ -108,7 +108,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 string date2 = date == "" ? "" : date.Substring(date.IndexOf("/") + 1).Trim();
                 var s1 = sumDate(date1);
                 var s2 = sumDate(date2);
-                var reports = (from b in db.Reports.Where(x => x.Status == false)
+                var reports = (from b in db.Reports.Where(x => x.Status == false && x.So !="")
                                select new
                                {
                                    id = b.Id,
@@ -168,7 +168,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 string date2 = date == "" ? "" : date.Substring(date.IndexOf("/") + 1).Trim();
                 var s1 = sumDate(date1);
                 var s2 = sumDate(date2);
-                var reports = (from b in db.Reports.Where(x => x.Status == true)
+                var reports = (from b in db.Reports.Where(x => x.Status == true && x.So != "")
                                select new
                                {
                                    id = b.Id,
