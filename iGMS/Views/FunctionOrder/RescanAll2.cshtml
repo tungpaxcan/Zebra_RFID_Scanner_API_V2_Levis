@@ -324,75 +324,80 @@
         //hien thi du lieu trong file
       function showFile(data) {
           try {
-                for (var i in data) {
-                    var cartontovals = data[i]["Ctn barcode"] == undefined ? data[i]["Ctn barcode "] : data[i]["Ctn barcode"]
-                    var cartontoval = cartontovals == undefined ? data[i]["cntNo"] : cartontovals
-                    var doNo = data[i]["doNo"] == undefined ? data[i]["PO"] : data[i]["doNo"]
-                    const epc = data[i]["EPC"] == undefined ? data[i]["epc"] : data[i]["EPC"];
-                    var idPoCtn = cartontoval + "_" +doNo
-                    if (idPoCtn in arrayCTN) {
-                        $('td[data-qty="' + idPoCtn + '"]').text(Number($('td[data-qty="' + idPoCtn + '"]').text()) + 1)
-                        arrayCTN[idPoCtn].push(epc)
-                    } else {
-                        arrayCTN[idPoCtn] = [epc]
-                        var tbd = `<tr data-status="">
+              for (var i in data) {
+                  var cartontovals = data[i]["Ctn barcode"] == undefined ? data[i]["Ctn barcode "] : data[i]["Ctn barcode"]
+                  var cartontoval = cartontovals == undefined ? data[i]["cntNo"] : cartontovals
+                  var doNo = data[i]["doNo"] == undefined ? data[i]["PO"] : data[i]["doNo"]
+                  const epc = data[i]["EPC"] == undefined ? data[i]["epc"] : data[i]["EPC"];
+                  var idPoCtn = cartontoval + "_" + doNo
+                  if (idPoCtn in arrayCTN) {
+                      $('td[data-qty="' + idPoCtn + '"]').text(Number($('td[data-qty="' + idPoCtn + '"]').text()) + 1)
+                      arrayCTN[idPoCtn].push(epc)
+                  } else {
+                      arrayCTN[idPoCtn] = [epc]
+                      var tbd = `<tr data-status="">
                                       <td>${data[i]["PO"].toString().trim()}</td>
                                       <td data-ctn="${idPoCtn}" data-so="${data[i]["SOnumber"].toString().trim()}">${cartontoval}</td>
                                       <td data-qty="${idPoCtn}">1</td></tr>`
-                                      $('#scanCT').append(tbd)
-                    }
-                   
-                    if (So.includes(data[i]["SOnumber"].toString().trim())) {
-                      /*  updateSo(arrayInfoPreASN, data[i]["SOnumber"].toString().trim(), idPoCtn)*/
-                    } else {
-                        //arrayInfoPreASN.push({
-                        //    "so": data[i]["SOnumber"].toString().trim(),
-                        //    "po": data[i]["PO"].toString().trim(),
-                        //    "sku": data[i]["SKU"].toString().trim(),
-                        //    "ctn": [idPoCtn.toString().trim()],
-                        //    "qty": 1,
-                        //})
-                        So += data[i]["SOnumber"].toString().trim() + ",";
-                        
-                    }
-                    if (Po.includes(data[i]["PO"].toString().trim())) {
-                        updatePo(arrayInfoPreASN, data[i]["PO"].toString().trim(), cartontoval)
-                    } else {
-                        arrayInfoPreASN.push({
-                            "so": data[i]["SOnumber"].toString().trim(),
-                            "po": data[i]["PO"].toString().trim(),
-                            "sku": data[i]["SKU"].toString().trim(),
-                            "ctn": [cartontoval.toString().trim()],
-                            "qty": 1,
-                        })
-                        Po += data[i]["PO"].toString().trim() + ","
-                        Result += `<div>${data[i]["PO"].toString().trim()} Scanned <span name="Scanned${data[i]["PO"].toString().trim()}">0</span>/<span name="tongScanCtn${data[i]["PO"].toString().trim()}">1</span></div>`;
-                    }
-                    if (Sku.includes(data[i]["SKU"].toString().trim())) {
+                      $('#scanCT').append(tbd)
+                  }
 
-                    } else {
-                        Sku += data[i]["SKU"].toString().trim() + ","
-                    }
-                    if (!hasUpc(arrayInfo, data[i]["UPC"].toString().trim())) {
-                        arrayInfo.push({
-                            "upc": idPoCtn.toString().trim(),
-                            "Po": data[i]["PO"].toString().trim(),
-                            "So": data[i]["SOnumber"].toString().trim(),
-                            "SKU": data[i]["SKU"].toString().trim()
-                        })
-                    }
+                  if (So.includes(data[i]["SOnumber"].toString().trim())) {
+                      /*  updateSo(arrayInfoPreASN, data[i]["SOnumber"].toString().trim(), idPoCtn)*/
+                  } else {
+                      //arrayInfoPreASN.push({
+                      //    "so": data[i]["SOnumber"].toString().trim(),
+                      //    "po": data[i]["PO"].toString().trim(),
+                      //    "sku": data[i]["SKU"].toString().trim(),
+                      //    "ctn": [idPoCtn.toString().trim()],
+                      //    "qty": 1,
+                      //})
+                      So += data[i]["SOnumber"].toString().trim() + ",";
+
+                  }
+                  if (Po.includes(data[i]["PO"].toString().trim())) {
+                      updatePo(arrayInfoPreASN, data[i]["PO"].toString().trim(), cartontoval)
+                  } else {
+                      arrayInfoPreASN.push({
+                          "so": data[i]["SOnumber"].toString().trim(),
+                          "po": data[i]["PO"].toString().trim(),
+                          "sku": data[i]["SKU"].toString().trim(),
+                          "ctn": [cartontoval.toString().trim()],
+                          "qty": 1,
+                      })
+                      Po += data[i]["PO"].toString().trim() + ","
+                      Result += `<div>${data[i]["PO"].toString().trim()} Scanned <span name="Scanned${data[i]["PO"].toString().trim()}">0</span>/<span name="tongScanCtn${data[i]["PO"].toString().trim()}">1</span></div>`;
+                  }
+                  if (Sku.includes(data[i]["SKU"].toString().trim())) {
+
+                  } else {
+                      Sku += data[i]["SKU"].toString().trim() + ","
+                  }
+                  if (!hasUpc(arrayInfo, data[i]["UPC"].toString().trim())) {
+                      arrayInfo.push({
+                          "upc": idPoCtn.toString().trim(),
+                          "Po": data[i]["PO"].toString().trim(),
+                          "So": data[i]["SOnumber"].toString().trim(),
+                          "SKU": data[i]["SKU"].toString().trim()
+                      })
+                  }
 
 
               }
-                So = So.slice(0, -1)
-                Po = Po.slice(0, -1)
-                Sku = Sku.slice(0, -1)
-                var selectSo = So.split(",")
-                var selectPo = Po.split(",")
-                $('#so').append(option(selectSo))
-                $('#po').append(option(selectPo))
-                $('#SONo').text(So)
+              
+              So = So.slice(0, -1)
+              Po = Po.slice(0, -1)
+              Sku = Sku.slice(0, -1)
+              var selectSo = So.split(",")
+              var selectPo = Po.split(",")
+              $('#so').append(option(selectSo))
+              $('#po').append(option(selectPo))
+              $('#SONo').text(So)
               $('#result').append(Result)
+              $.each(arrayInfoPreASN, function (k, v) {
+                  $('span[name="tongScanCtn' + v.po + '"]').empty()
+                  $('span[name="tongScanCtn' + v.po + '"]').append(v.ctn.length)
+              })
               MatchCtnRescan(1)
             } catch (e) {
                  toastr.error(e, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
@@ -410,6 +415,7 @@
                     /*data = data.concat(response.epcToUpc);*/
                     $.each(response.Ctn, function (k, v) {
                         if (v.status == "Matched") {
+                            $('#po').val(v.po)
                             matchedCTN(v.ctn)
                         }
                     })
@@ -452,7 +458,10 @@
             ignoreIfFocusOn: 'input', // turn off scanner detection if an input has focus
             minLength: 0,
             onComplete: function (barcode, qty) {
-                matchedCTN(barcode)
+                let lastFiveChars = barcode.slice(-5);
+                let number = parseInt(lastFiveChars, 10);
+                console.log(number)
+                matchedCTN(number);
             }, // main callback function
             scanButtonKeyCode: 116, // the hardware scan button acts as key 116 (F5)
             scanButtonLongPressThreshold: 5, // assume a long press if 5 or more events come in sequence
@@ -773,7 +782,7 @@
                             $('#rsl').empty()
                             if (data.code == 200) {
                                 $('#rsl').append(data.msg)
-                                window.location.href = "/HOD/Index"
+                                window.location.href = "/HOD/Uniqlo"
                             }
 
                         }
@@ -1017,15 +1026,16 @@
         function getUpcTrue(arr1, arr2) {
             for (let i = 0; i < arr1.length; i++) {
                 var upc = arr1[i]["upc"].toString().trim()
+                var po = arr1[i]["po"].toString().trim()
                 if (arr1[i]["status"] == true) {
                     for (let j = 0; j < arr2.length; j++) {
-                        if (arr2[j]["Carton to"].toString().trim() == upc) {
+                        if (arr2[j]["Carton to"].toString().trim() == upc && arr2[j]["PO"] == po) {
                             arr2[j]["status"] = true
                         }
                     }
                 } else {
                     for (let j = 0; j < arr2.length; j++) {
-                        if (arr2[j]["Carton to"].toString().trim() == upc) {
+                        if (arr2[j]["Carton to"].toString().trim() == upc && arr2[j]["PO"] == po) {
                             arr2[j]["status"] = false
                             arr2[j]["qtyscan"] = arr1[i]["qtyScan"]
                         }

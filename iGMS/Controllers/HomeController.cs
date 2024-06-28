@@ -183,7 +183,7 @@ namespace Zebra_RFID_Scanner.Controllers
                     }
                     else
                     {
-                        return Json(new { code = 200, url = "/HOD/Uniqlo" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { code = 200, url = "/Home/Index2" }, JsonRequestBehavior.AllowGet);
                     }
                   
                 }
@@ -411,7 +411,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 var nameUser = user.Name;
                 Ctn = Ctn.Replace("Carton to", "CartonTo");
                 Ctn = Ctn.Replace("UPC QTY", "UPCQty");
-                var Ctns = JsonConvert.DeserializeObject<Ctn.Carton[]>(Ctn);
+                var Ctns = JsonConvert.DeserializeObject<DataScanPhysical[]>(Ctn);
                 var epcToUpcs = JsonConvert.DeserializeObject<Datum[]>(epcToUpc);
                 var generals = JsonConvert.DeserializeObject<General[]>(Ctn);
                 var discrepancy = JsonConvert.DeserializeObject<Discrepancy[]>(Ctn);
@@ -420,7 +420,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 Dele.DeleteGenerals(idReports);
                 foreach(var item in Ctns)
                 {
-                    var carton = db.DataScanPhysicals.FirstOrDefault(x => x.CartonTo == item.CartonTo && x.IdReports == idReports && x.Status == false);
+                    var carton = db.DataScanPhysicals.FirstOrDefault(x => x.CartonTo == item.CartonTo && x.IdReports == idReports && x.Status == false && x.Po == item.Po);
                     if(carton != null)
                     {
                         carton.Status = true;

@@ -28,9 +28,9 @@
                     </div>
                 </div>
             </form>
-            <div class="card-body" style="display:flex;justify-content:center;text-align:center">
+            @*<div class="card-body" style="display:flex;justify-content:center;text-align:center">
                 <input onchange="upload(event)" style="transform:translateY(150%)" class="file-uploader__submit-button" type="file" value="@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.upload) PreASN">
-            </div>
+            </div>*@
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6" style=" margin-top: 5%;">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
@@ -109,7 +109,7 @@
                 success: function (data) {
                     if (data.code == 200) {
                         toastr.success(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.success) !!!");
-                        getFile(data.fileUrl)
+                        window.location.href = "/HOD/Uniqlo"
                     } else {
                           toastr.error(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
                     }

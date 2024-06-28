@@ -287,6 +287,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 return Json(new { code = 500, msg = "Sai !!!" + e.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+        string[] PO = new string[0];
         ApiController ApiController = new ApiController();
         [HttpPost]
         public async Task<JsonResult> GetFileApi()
@@ -298,7 +299,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 string port_code = Request.Form["portCode"];
                 string date = Request.Form["date"];
                 string device = Request.Form["device"];
-                string[] PO = new string[0];
+               
                 if (string.IsNullOrEmpty(date) || string.IsNullOrEmpty(port_code))
                 {
                     return Json(new { code = 500, msg = rm.GetString("false").ToString() + " Not enough input to get data" }, JsonRequestBehavior.AllowGet);
@@ -384,6 +385,7 @@ namespace Zebra_RFID_Scanner.Controllers
             {
                
                 List<List<string>> rows = new List<List<string>>();
+                List<string> poList = new List<string>(PO);
                 Certificate2 cert = await ApiController.GetCertificate();
                 if (cert != null)
                 {
@@ -424,16 +426,14 @@ namespace Zebra_RFID_Scanner.Controllers
                                 rowValuesHead.Add("exf");
                                 rowValuesHead.Add("packKey");
                                 rowValuesHead.Add("epc");
-                                rowValuesHead.Add("UPC");
                                 rows.Add(rowValuesHead);
                                 while (!reader.EndOfStream)
                                 {
                                     var line = await reader.ReadLineAsync();
                                     var values = line.Split(',');
                                     List<string> rowValues = new List<string>(values);
-                                    rowValues.Add("s");
                                     // Thêm giá trị tính toán từ controller.epctoupc() vào cột thứ 14 (index 13)
-                                    string computedValue = controller.epctoupc(rowValues[13]);
+
                                     string CartonTo = rowValues[6]?.ToString().Trim();
                                     string EPC = rowValues[13]?.ToString().Trim();
                                     string doNo = rowValues[0]?.ToString().Trim();
@@ -469,6 +469,11 @@ namespace Zebra_RFID_Scanner.Controllers
                                     }
                                     if(checkE == null)
                                     {
+                                        if (!poList.Contains(doNo))
+                                        {
+                                            poList.Add(doNo);
+                                        }
+                                        
                                         EPCDiscrepancy ePC = new EPCDiscrepancy()
                                         {
                                             Carton = CartonTo,
@@ -491,11 +496,11 @@ namespace Zebra_RFID_Scanner.Controllers
                                     }
                                    
                                     
-                                    rowValues.Add(computedValue);
                                     // Thêm hàng mới vào danh sách các hàng
                                     rows.Add(rowValues);
                                 }
                             }
+                            PO = poList.ToArray();
                             string Ctn = JsonConvert.SerializeObject(general);
                             string EPCDiscrepancy = JsonConvert.SerializeObject(ePCDiscrepancies);
                             Hcontroller.Save(namePath.Replace(".csv",""), "", Ctn, "", Po, "", "", "", "", "", "", EPCDiscrepancy);

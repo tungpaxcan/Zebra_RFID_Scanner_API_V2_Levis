@@ -53,8 +53,10 @@ namespace Zebra_RFID_Scanner.Controllers
                         C12 = "expectedQty",
                         C13 = "qty",
                         C14 = "missingEpc",
-                        C15 = "unknownEpc",
-                        C16 = "uploadDateTime"
+                        C15 = "epcMoveToOtherCartons",
+                        C16 = "unknownEpc",
+                        C17 = "epcMoveFromOtherCartons",
+                        C18 = "uploadDateTime"
                     };
                     datas.Add(data);
                     var reports = db.Reports.SingleOrDefault(x => x.Id == id);
@@ -80,7 +82,9 @@ namespace Zebra_RFID_Scanner.Controllers
                             C13 = item.Qty,
                             C14 = "0",
                             C15 = "0",
-                            C16 = dateTime.Year.ToString().PadLeft(2,'0') + "-" + dateTime.Month.ToString().PadLeft(2, '0') + "-" + dateTime.Day.ToString().PadLeft(2, '0')+" "+dateTime.Hour.ToString().PadLeft(2,'0')+":"+
+                            C16 = "0",
+                            C17 = "0",
+                            C18 = dateTime.Year.ToString().PadLeft(2,'0') + "-" + dateTime.Month.ToString().PadLeft(2, '0') + "-" + dateTime.Day.ToString().PadLeft(2, '0')+" "+dateTime.Hour.ToString().PadLeft(2,'0')+":"+
                                     dateTime.Minute.ToString().PadLeft(2, '0')+":"+dateTime.Second.ToString().PadLeft(2, '0')+":"+dateTime.Millisecond.ToString().PadLeft(3,'0')
                         };
                         Port = item.port;
@@ -104,9 +108,11 @@ namespace Zebra_RFID_Scanner.Controllers
                             C11 = item.packKey,
                             C12 = item.Qty,
                             C13 = item.QtyScan,
-                            C14 = Math.Abs(int.Parse(item.QtyScan)-int.Parse(item.Qty)).ToString(),
-                            C15 = "0",
-                            C16 = dateTime.Year.ToString().PadLeft(2, '0') + "-" + dateTime.Month.ToString().PadLeft(2, '0') + "-" + dateTime.Day.ToString().PadLeft(2, '0') + " " + dateTime.Hour.ToString().PadLeft(2, '0') + ":" +
+                            C14 = (int.Parse(item.QtyScan) - int.Parse(item.Qty)<0? Math.Abs(int.Parse(item.QtyScan) - int.Parse(item.Qty)).ToString() : "0"),
+                            C15 = (int.Parse(item.QtyScan) - int.Parse(item.Qty) < 0 ? Math.Abs(int.Parse(item.QtyScan) - int.Parse(item.Qty)).ToString() : "0"),
+                            C16 = (int.Parse(item.QtyScan) - int.Parse(item.Qty) > 0 ? Math.Abs(int.Parse(item.QtyScan) - int.Parse(item.Qty)).ToString() : "0"),
+                            C17 = (int.Parse(item.QtyScan) - int.Parse(item.Qty) > 0 ? Math.Abs(int.Parse(item.QtyScan) - int.Parse(item.Qty)).ToString() : "0"),
+                            C18 = dateTime.Year.ToString().PadLeft(2, '0') + "-" + dateTime.Month.ToString().PadLeft(2, '0') + "-" + dateTime.Day.ToString().PadLeft(2, '0') + " " + dateTime.Hour.ToString().PadLeft(2, '0') + ":" +
                                     dateTime.Minute.ToString().PadLeft(2, '0') + ":" + dateTime.Second.ToString().PadLeft(2, '0') + ":" + dateTime.Millisecond.ToString().PadLeft(3, '0')
                         };
                         Port = item.port;
@@ -122,7 +128,7 @@ namespace Zebra_RFID_Scanner.Controllers
                         // Ghi dữ liệu vào file CSV
                         for (int i = 0; i < datas.Count; i++)
                         {
-                            for (int j = 0; j < 17; j++)
+                            for (int j = 0; j < 18; j++)
                             {
                                 if (j > 0)
                                 {
