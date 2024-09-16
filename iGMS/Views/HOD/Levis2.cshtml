@@ -1,8 +1,9 @@
 ﻿
 @{
-    ViewBag.Title = "Uniqlo";
+    ViewBag.Title = "Levis2";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div class="d-flex flex-column-fluid">
     <!--begin::Container-->
     <div class="container-fluid">
@@ -281,7 +282,7 @@
                                                     <th style="min-width:100px">Action</th>
                                                     <th style="min-width:100px">CartonID</th>
                                                     <th style="min-width:100px">Result</th>
-                                                    <th style="min-width:100px">CTN</th>
+                                                    <th style="min-width:100px">UPC</th>
                                                     <th style="min-width:100px">QTY</th>
                                                     <th style="min-width:100px">So</th>
                                                     <th style="min-width:250px">Po</th>
@@ -527,108 +528,7 @@
 @section scripts{
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-daterangepicker.js"></script>
     <script>
-        $('#chooseFile').bind('change', function () {
-            try {
-                var filename = $("#chooseFile").val();
-                if (/^\s*$/.test(filename)) {
-                    $(".file-upload").removeClass('active'); $("#noFile").empty()
-                    $("#noFile").append("@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.nofilechosen)...");
-                }
-                else {
-                    $(".file-upload").addClass('active');
-                    $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
-                }
-            } catch (error) {
-                Swal.fire(error.message, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pressthebutton)!", "error");
-            }
-
-        });
-
-        function Import() {
-            try {
-                var hodReports = $('select[name="nameReports"]').val();
-                if (hodReports == "-1") {
-                    toastr.error("haven't selected PreASN", "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
-                    return;
-                }
-            let fileUpload = $('input[name="UploadedFile"]').get(0);
-                let files = fileUpload.files;
-                let formdata = new FormData();
-            formdata.append('file', files[0]);
-                formdata.append('id', hodReports);
-            $.ajax({
-                type: 'post',
-                url: '/Reports/Upload',
-                contentType: false,
-                processData: false,
-                data: formdata,
-                    success: function (data) {
-                        if (data.code == 200) {
-                            var array = []
-                            var table =`<table class="table table-head-custom table-head-bg table-borderless table-vertical-center">
-    <thead><tr><th>UPC</th><th>status</th><th>QtyScan/QtyTotal</th><th>action</th></tr></thead>
-    <tbody>`
-                            $.each(data.msg, function (k, v) {
-                                if (!array.includes(v.UPC)) {
-                                    table += `<tr><td>${v.UPC}</td><td>${v.Status}</td><td>${v.Qty}</td><td><input data-upc="${v.UPC}" name="status" type="checkbox" checked/></td></tr>`
-                                    array.push(v.UPC)
-                                }
-                            })
-                            table+=`</tbody></table>`
-                            Swal.fire({
-                                title: 'import information',
-                                html: table,
-                                icon: 'warning',
-                                width: 600,
-                                showCancelButton: true,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
-                                confirmButtonText: 'Yes!'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    var checkBox = $('input[name="status"]')
-                                    for (let i = 0; i < checkBox.length; i++) {
-                                        if (!checkBox[i].checked) {
-                                            for (let j = (data.msg).length - 1; j >= 0; j--) {
-                                                var upc = (data.msg)[j]["UPC"];
-                                                if (upc == checkBox[i].dataset["upc"]) {
-                                                    (data.msg).splice(j, 1);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    save(data.msg, hodReports)
-                                }
-                            })
-                        }
-                    }
-                })
-            } catch (error) {
-                Swal.fire(error.message, "", "error")
-            }
-        }
-
-
-        function save(arr, hodReports) {
-            $.ajax({
-                url: '/Reports/Save',
-                type: 'post',
-                data: { arr: JSON.stringify(arr), hodReports: hodReports },
-                success: function (data) {
-                    if (data.code == 200) {
-                        window.location.href = "/HOD/Index"
-                        Swal.fire(
-                            'success!',
-                            'Updated.',
-                            'success'
-                        )
-                    } else {
-                         toastr.error(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
-                    }
-                }
-            })
-        }
-
+        const type = "levis2";
         var name = "";
         var date = "";
         UnconfirmedReports(name, date)
@@ -645,10 +545,9 @@
                 }
             });
         }
-
         function ReportsAll(name,date) {
             $.ajax({
-                url: '/ReportsUNIQLO/ReportsAll',
+                url: '/Reports/ReportsAll',
                 type: 'get',
                 data: { name, date },
                 success: function (data) {
@@ -658,7 +557,7 @@
                         $.each(data.reports, function (k, v) {
                             tr += `<tr id="removeAll${v.id}">
                                     <td>${v.id}</td>
-                                    <td>${v.status}</td>
+                                    <td>${v.status == true ? `Confirmed` : `Unconfimred`}</td>
                                     <td><div class="checkbox-inline">
 																<label class="checkbox checkbox-outline checkbox-success">
 																<input type="checkbox" name="radioReportsAll" checked="checked">
@@ -673,9 +572,9 @@
         }
         function UnconfirmedReports(name,date) {
             $.ajax({
-                url: '/ReportsUNIQLO/UnconfirmedReports',
+                url: '/Reports/UnconfirmedReports',
                 type: 'get',
-                data: { name, date },
+                data: { name, date,type },
                 success: function (data) {
                     $('select[name="nameReports"]').empty()
                     if (data.code == 200) {
@@ -705,7 +604,7 @@
         })
         function confirmedReports(name, date) {
             $.ajax({
-                url: '/ReportsUNIQLO/confirmedReports',
+                url: '/Reports/confirmedReports',
                 type: 'get',
                 data: { name, date},
                 success: function (data) {
@@ -863,10 +762,25 @@
                             loadMoreDataGeneral(1)
                             $('span[name="Consignee"]').append(data.Consignee)
                             $('span[name="Shipper"]').append(data.Shipper)
-                            $('span[name="SOnumber"]').append(data.so)
+                            $.each((data.so).split(","), function (k, v) {
 
-                            $('span[name="POnumber"]').append((data.po).replace(",",""))
-                            $('span[name="SKU"]').append(data.sku)
+                            })
+                            let optionsSO = '';
+                            $.each((data.so).split(","), function (k, v) {
+                                optionsSO += `<option>${v}</option>`;
+                            });
+
+                            $('span[name="SOnumber"]').append(`<select class="form-control">${optionsSO}</select>`)
+                            let optionsPO = '';
+                            $.each((data.po).split(","), function (k, v) {
+                                optionsPO += `<option>${v}</option>`;
+                            });
+                            $('span[name="POnumber"]').append(`<select class="form-control">${optionsPO}</select>`)
+                            let optionsSKU = '';
+                            $.each((data.sku).split(","), function (k, v) {
+                                optionsSKU += `<option>${v}</option>`;
+                            });
+                            $('span[name="SKU"]').append(`<select class="form-control">${optionsSKU}</select>`)
 
 
                             $('#dateReports').append(data.createDate)
@@ -927,7 +841,7 @@
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${v.epc}</span>
                                         </td>
                                         <td class="pl-0">
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${v.upc}</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${v.ctn}</span>
                                         </td>
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${data.createDate}</span>
@@ -1070,32 +984,32 @@
             var checkupctotal = []
 
             $.each(dataF, function (k, v) {
-                if (checkupctotal.includes(`${v.upc}_${v.po}`)) {
+                if (checkupctotal.includes(`${v.ctn}`)) {
                     if (fileCsv.length > 0) {
-                        var qtyScan = $(`span[name="dataqtyscan${v.upc}_${v.po}"]`).text()
-                        $(`span[name="dataqtyscan${v.upc}_${v.po}"]`).text(Number(qtyScan) + Number(v.qtyScan))
+                        var qtyScan = $(`span[name="dataqtyscan${v.ctn}"]`).text()
+                        $(`span[name="dataqtyscan${v.ctn}"]`).text(Number(qtyScan) + Number(v.qtyScan))
                     }
-                    var qty = $(`span[name="dataqty${v.upc}_${v.po}"]`).text()
+                    var qty = $(`span[name="dataqty${v.ctn}"]`).text()
 
-                    var ctn = $(`span[name="datactn${v.upc}_${v.po}"]`).text()
-                    $(`span[name="dataqty${v.upc}_${v.po}"]`).text(Number(qty) + Number(v.qty))
+                    var ctn = $(`span[name="datactn${v.ctn}"]`).text()
+                    $(`span[name="dataqty${v.ctn}"]`).text(Number(qty) + Number(v.qty))
 
-                    $(`span[name="datactn${v.upc}_${v.po}"]`).append(", " + v.ctn)
+                    $(`span[name="datactn${v.ctn}"]`).append(", " + v.ctn)
                 } else {
-                    checkupctotal.push(`${v.upc}_${v.po}`)
+                    checkupctotal.push(`${v.ctn}`)
                     var tbodyDiscrepanciestotal = ``
                     tbodyDiscrepanciestotal += `<tr>
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${v.po}</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="dataqty${v.upc}_${v.po}">${v.qty}</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="dataqty${v.ctn}">${v.qty}</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="dataqtyscan${v.upc}_${v.po}">${v.qtyScan}</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="dataqtyscan${v.ctn}">${v.qtyScan}</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="datactn${v.upc}_${v.po}">${v.ctn}</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="datactn${v.ctn}">${v.ctn}</span>
                                         </td>
                                     </tr>`
                     $('#tbodyDiscrepanciestotal').append(tbodyDiscrepanciestotal)
@@ -1103,29 +1017,29 @@
             })
             var checkupctotal1 = []
             $.each(dataF, function (k, v) {
-                if (checkupctotal1.includes(`${v.upc}_${v.po}`)) {
+                if (checkupctotal1.includes(`${v.ctn}`)) {
                     if (fileCsv.length > 0) {
-                        var qtyScan = $(`span[name="data1qtyscan${v.upc}_${v.po}"]`).text()
-                        $(`span[name="data1qtyscan${v.upc}_${v.po}"]`).text(Number(qtyScan) + Number(v.qtyScan))
+                        var qtyScan = $(`span[name="data1qtyscan${v.ctn}"]`).text()
+                        $(`span[name="data1qtyscan${v.ctn}"]`).text(Number(qtyScan) + Number(v.qtyScan))
                     }
-                    var qty = $(`span[name="data1qty${v.upc}_${v.po}"]`).text()
-                    $(`span[name="data1qty${v.upc}_${v.po}"]`).text(Number(qty) + Number(v.qty))
+                    var qty = $(`span[name="data1qty${v.ctn}"]`).text()
+                    $(`span[name="data1qty${v.ctn}"]`).text(Number(qty) + Number(v.qty))
 
                 } else {
                     checkupctotal1.push(`${v.upc}_${v.po}`)
 
                     var Summary = `<tr style="background:red">
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${v.upc}</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${v.ctn}</span>
                                         </td>
                                          <td>
                                              <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${v.po}</span>
                                          </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="data1qty${v.upc}_${v.po}">${v.qty}</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="data1qty${v.ctn}">${v.qty}</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="data1qtyscan${v.upc}_${v.po}">${v.qtyScan}</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="data1qtyscan${v.ctn}">${v.qtyScan}</span>
                                         </td>
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg" >Mismatched</span>
@@ -1137,16 +1051,16 @@
             $.each(dataG, function (k, v) {
                 var Summary = `<tr style="background:green">
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${v.upc}</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${v.ctn}</span>
                                         </td>
                                           <td>
                                               <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${v.po}</span>
                                           </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="data1qty${v.upc}_${v.po}">${v.qty}</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="data1qty${v.ctn}">${v.qty}</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="data1qtyscan${v.upc}_${v.po}">${v.qty}</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="data1qtyscan${v.ctn}">${v.qty}</span>
                                         </td>
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg" >Matched</span>
@@ -1192,7 +1106,7 @@
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${createDate}</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">Null</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg"></span>
                                         </td>
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="HOD">${modifyDate}</span>
@@ -1261,7 +1175,7 @@
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">${data.createDate}</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">Null</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg"></span>
                                         </td>
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg" name="HOD">${data.modifyDate}</span>
@@ -1398,21 +1312,21 @@
         }
 
         function rescanAll() {
-
-            var id = $('select[name="nameReports"]').val()
-            localStorage.setItem('nameReports', id);
-            $.ajax({
-                url: '/Reports/rescanAll',
-                type: 'get',
-                data: { id: id },
-                success: function (data) {
-                    if (data.code == 200) {
-                        window.location.href = data.url
-                    } else {
-                        toastr.error(data.msg)
-                    }
-                }
-            })
+            window.location.href = "/FunctionOrder/RescanLevis2"
+            //var id = $('select[name="nameReports"]').val()
+            //localStorage.setItem('nameReports', id);
+            //$.ajax({
+            //    url: '/Reports/rescanAll',
+            //    type: 'get',
+            //    data: { id: id },
+            //    success: function (data) {
+            //        if (data.code == 200) {
+                        
+            //        } else {
+            //            toastr.error(data.msg)
+            //        }
+            //    }
+            //})
 
         }
         function getArrayReports(id) {
@@ -1635,3 +1549,4 @@
     <script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
     <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
 }
+

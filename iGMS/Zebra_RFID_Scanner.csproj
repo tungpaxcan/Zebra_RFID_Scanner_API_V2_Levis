@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Zebra_RFID_Scanner</RootNamespace>
     <AssemblyName>Zebra_RFID_Scanner</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -2483,6 +2483,8 @@
     <Content Include="Views\FunctionOrder\RescanAll2.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\HOD\Uniqlo.cshtml" />
+    <Content Include="Views\HOD\Levis2.cshtml" />
+    <Content Include="Views\FunctionOrder\RescanLevis2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2541,7 +2543,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50694</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:44342/</IISUrl>
+          <IISUrl>https://localhost:44342/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>https://localhost:44342/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

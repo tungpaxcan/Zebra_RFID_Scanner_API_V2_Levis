@@ -4,21 +4,21 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1f1b3c6b5f02451b97c2fbb44116cedb" Name="Diagram1">
+      <Diagram DiagramId="1f1b3c6b5f02451b97c2fbb44116cedb" Name="Diagram1" ZoomLevel="92">
         <EntityTypeShape EntityType="MaerskModel.Datum" Width="1.5" PointX="5.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MaerskModel.DataScanPhysical" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MaerskModel.DetailEpc" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MaerskModel.Discrepancy" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MaerskModel.Discrepancy" Width="1.5" PointX="5.625" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MaerskModel.File" Width="1.5" PointX="9.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MaerskModel.FXconnect" Width="1.5" PointX="5.75" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MaerskModel.General" Width="1.5" PointX="3" PointY="10.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MaerskModel.User" Width="1.5" PointX="8" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MaerskModel.General" Width="1.5" PointX="4.5" PointY="11.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MaerskModel.XMLValidate" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="MaerskModel.FK_Users_FXconnect" ManuallyRouted="false" />
         <EntityTypeShape EntityType="MaerskModel.EPCDiscrepancy" Width="1.5" PointX="12.375" PointY="4.75" />
-        <EntityTypeShape EntityType="MaerskModel.Report" Width="1.5" PointX="0.75" PointY="6.875" />
+        <EntityTypeShape EntityType="MaerskModel.Report" Width="1.5" PointX="0.75" PointY="8.125" />
+        <EntityTypeShape EntityType="MaerskModel.User" Width="1.5" PointX="8" PointY="0.75" />
         <AssociationConnector Association="MaerskModel.FK_DataScanPhysical_Reports" />
         <AssociationConnector Association="MaerskModel.FK_Discrepancy_Reports" />
+        <AssociationConnector Association="MaerskModel.FK_Users_FXconnect" />
         <AssociationConnector Association="MaerskModel.FK_General_Reports" />
       </Diagram>
     </edmx:Diagrams>

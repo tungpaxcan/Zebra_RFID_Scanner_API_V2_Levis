@@ -36,6 +36,10 @@ namespace Zebra_RFID_Scanner.Models
         public string mngFctryCd { get; set; }
         public string facBranchCd { get; set; }
         public string packKey { get; set; }
+        public string Location { get; set; }
+        public string LocationClient { get; set; }
+        public Nullable<bool> StatusClient { get; set; }
+        public string deviceNumClient { get; set; }
     
         public virtual Report Report { get; set; }
     }

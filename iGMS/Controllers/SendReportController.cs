@@ -24,7 +24,7 @@ namespace Zebra_RFID_Scanner.Controllers
         ResourceManager rm = new ResourceManager("Zebra_RFID_Scanner.Resources.Resource", typeof(Resources.Resource).Assembly);
         // GET: SendReport
         [HttpPost]
-        public async Task<JsonResult> SendGeneral(string id, string name, string hod)
+        public async Task<JsonResult> SendGeneral(string id, string name, string hod,string type)
         {
             try
             {
@@ -121,7 +121,8 @@ namespace Zebra_RFID_Scanner.Controllers
                     string folderName = @"C:\RFID\Reports\";
                     string filePath = Port +"_"+ dateTime.Year.ToString().PadLeft(2, '0') + "-" + dateTime.Month.ToString().PadLeft(2, '0') + "-" + dateTime.Day.ToString().PadLeft(2, '0') + ".csv";
                     string folderPath = folderName + filePath;
-                    using (StreamWriter writer = new StreamWriter(folderPath, false, Encoding.UTF8))
+                    string folderPathLocal = folderName + id+".csv";
+                    using (StreamWriter writer = new StreamWriter(folderPathLocal, false, Encoding.UTF8))
                     {
                       
 
@@ -146,7 +147,10 @@ namespace Zebra_RFID_Scanner.Controllers
                             writer.WriteLine();
                         }
                     }
-                    await UploadFileApi(Port, dateTime.Year.ToString().PadLeft(2, '0') + "-" + dateTime.Month.ToString().PadLeft(2, '0') + "-" + dateTime.Day.ToString().PadLeft(2, '0'), folderPath);
+                    if(type == "send")
+                    {
+                        await UploadFileApi(Port, dateTime.Year.ToString().PadLeft(2, '0') + "-" + dateTime.Month.ToString().PadLeft(2, '0') + "-" + dateTime.Day.ToString().PadLeft(2, '0'), folderPathLocal);
+                    }
                     return Json(new { code = 200, }, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -162,7 +166,7 @@ namespace Zebra_RFID_Scanner.Controllers
         }
         ApiController ApiController = new ApiController();
         [HttpPost]
-        public async Task<JsonResult> UploadFileApi(string port_code, string date,string folderPath)
+        public async Task<JsonResult> UploadFileApi(string port_code, string date,string folderPathLocal)
         {
             try
             {
@@ -193,7 +197,7 @@ namespace Zebra_RFID_Scanner.Controllers
 
                             if (jsonResponse.StatusCode == 200)
                             {
-                                await UploadFileToApi(folderPath,jsonResponse.Body);
+                                await UploadFileToApi(folderPathLocal, jsonResponse.Body);
                                 return Json(new { code = 200, msg = "Upload File successfully" }, JsonRequestBehavior.AllowGet);
                             }
                             else if (jsonResponse.StatusCode == 400)
@@ -227,7 +231,7 @@ namespace Zebra_RFID_Scanner.Controllers
             }
 
         }
-        public async Task UploadFileToApi(string filePath, string apiUrl)
+        public async Task UploadFileToApi(string folderPathLocal, string apiUrl)
         {
             Certificate2 cert = await ApiController.GetCertificate();
             if (cert != null)
@@ -241,13 +245,13 @@ namespace Zebra_RFID_Scanner.Controllers
                     using (var content = new MultipartFormDataContent())
                     {
                         // Sử dụng Stream để đọc file CSV
-                        using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                        using (FileStream fileStream = new FileStream(folderPathLocal, FileMode.Open, FileAccess.Read))
                         {
                             var fileContent = new StreamContent(fileStream);
                             fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
 
                             // Thêm file CSV vào nội dung của yêu cầu HTTP
-                            content.Add(fileContent, "file", Path.GetFileName(filePath));
+                            content.Add(fileContent, "file", Path.GetFileName(folderPathLocal));
                             // Gửi yêu cầu HTTP POST
                             var request = new HttpRequestMessage()
                             {

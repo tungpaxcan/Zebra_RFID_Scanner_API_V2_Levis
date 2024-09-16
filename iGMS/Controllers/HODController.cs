@@ -15,6 +15,10 @@ namespace Zebra_RFID_Scanner.Controllers
         {
             return View();
         }
+        public ActionResult Levis2()
+        {
+            return View();
+        }
         public ActionResult Uniqlo()
         {
             return View();

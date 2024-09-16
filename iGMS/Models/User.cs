@@ -19,6 +19,7 @@ namespace Zebra_RFID_Scanner.Models
         public string User1 { get; set; }
         public string Pass { get; set; }
         public string Name { get; set; }
+        public Nullable<bool> Site { get; set; }
         public string AddRess { get; set; }
         public string Email { get; set; }
         public Nullable<System.DateTime> Birth { get; set; }

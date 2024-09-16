@@ -34,6 +34,7 @@ namespace Zebra_RFID_Scanner.Models
         public Nullable<bool> Status { get; set; }
         public string Shiper { get; set; }
         public Nullable<System.DateTime> TimeStart { get; set; }
+        public Nullable<bool> StatusClient { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DataScanPhysical> DataScanPhysicals { get; set; }

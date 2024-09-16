@@ -30,6 +30,11 @@
           <Property Name="mngFctryCd" Type="varchar" MaxLength="250" />
           <Property Name="facBranchCd" Type="varchar" MaxLength="250" />
           <Property Name="packKey" Type="varchar" MaxLength="250" />
+          <Property Name="Location" Type="varchar" MaxLength="250" />
+          <Property Name="CartonID" Type="varchar" MaxLength="50" />
+          <Property Name="LocationClient" Type="varchar" MaxLength="250" />
+          <Property Name="StatusClient" Type="bit" />
+          <Property Name="deviceNumClient" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="DataScanPhysical">
           <Key>
@@ -57,6 +62,11 @@
           <Property Name="mngFctryCd" Type="varchar" MaxLength="250" />
           <Property Name="facBranchCd" Type="varchar" MaxLength="250" />
           <Property Name="packKey" Type="varchar" MaxLength="250" />
+          <Property Name="Location" Type="varchar" MaxLength="250" />
+          <Property Name="QtyScan" Type="varchar" MaxLength="50" />
+          <Property Name="LocationClient" Type="varchar" MaxLength="250" />
+          <Property Name="StatusClient" Type="bit" />
+          <Property Name="deviceNumClient" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="DetailEpc">
           <Key>
@@ -96,6 +106,10 @@
           <Property Name="mngFctryCd" Type="varchar" MaxLength="250" />
           <Property Name="facBranchCd" Type="varchar" MaxLength="250" />
           <Property Name="packKey" Type="varchar" MaxLength="250" />
+          <Property Name="Location" Type="varchar" MaxLength="250" />
+          <Property Name="LocationClient" Type="varchar" MaxLength="250" />
+          <Property Name="StatusClient" Type="bit" />
+          <Property Name="deviceNumClient" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="EPCDiscrepancy">
           <Key>
@@ -122,6 +136,9 @@
           <Property Name="mngFctryCd" Type="varchar" MaxLength="250" />
           <Property Name="facBranchCd" Type="varchar" MaxLength="250" />
           <Property Name="packKey" Type="varchar" MaxLength="250" />
+          <Property Name="Location" Type="varchar" MaxLength="250" />
+          <Property Name="LocationClient" Type="varchar" MaxLength="250" />
+          <Property Name="StatusClient" Type="bit" />
         </EntityType>
         <EntityType Name="File">
           <Key>
@@ -173,6 +190,10 @@
           <Property Name="mngFctryCd" Type="varchar" MaxLength="250" />
           <Property Name="facBranchCd" Type="varchar" MaxLength="250" />
           <Property Name="packKey" Type="varchar" MaxLength="250" />
+          <Property Name="Location" Type="varchar" MaxLength="250" />
+          <Property Name="LocationClient" Type="varchar" MaxLength="250" />
+          <Property Name="StatusClient" Type="bit" />
+          <Property Name="deviceNumClient" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="Reports">
           <Key>
@@ -190,6 +211,7 @@
           <Property Name="Status" Type="bit" />
           <Property Name="Shiper" Type="nvarchar(max)" />
           <Property Name="TimeStart" Type="datetime" />
+          <Property Name="StatusClient" Type="bit" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -200,6 +222,7 @@
           <Property Name="User" Type="varchar" MaxLength="100" />
           <Property Name="Pass" Type="varchar" MaxLength="100" />
           <Property Name="Name" Type="nvarchar" MaxLength="250" />
+          <Property Name="Site" Type="bit" />
           <Property Name="AddRess" Type="nvarchar" MaxLength="250" />
           <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="Birth" Type="datetime" />
@@ -341,6 +364,11 @@
           <Property Name="mngFctryCd" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="facBranchCd" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="packKey" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CartonID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LocationClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="StatusClient" Type="Boolean" />
+          <Property Name="deviceNumClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DataScanPhysical">
           <Key>
@@ -359,7 +387,6 @@
           <Property Name="ModifyDate" Type="DateTime" Precision="3" />
           <Property Name="ModifyBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Boolean" />
-          <NavigationProperty Name="Report" Relationship="MaerskModel.FK_DataScanPhysical_Reports" FromRole="DataScanPhysical" ToRole="Report" />
           <Property Name="cntry" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="port" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="deviceNum" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
@@ -369,6 +396,12 @@
           <Property Name="mngFctryCd" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="facBranchCd" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="packKey" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="QtyScan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LocationClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="StatusClient" Type="Boolean" />
+          <Property Name="deviceNumClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Report" Relationship="MaerskModel.FK_DataScanPhysical_Reports" FromRole="DataScanPhysical" ToRole="Report" />
         </EntityType>
         <EntityType Name="DetailEpc">
           <Key>
@@ -408,6 +441,10 @@
           <Property Name="mngFctryCd" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="facBranchCd" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="packKey" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="LocationClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="StatusClient" Type="Boolean" />
+          <Property Name="deviceNumClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Report" Relationship="MaerskModel.FK_Discrepancy_Reports" FromRole="Discrepancy" ToRole="Report" />
         </EntityType>
         <EntityType Name="File">
@@ -433,7 +470,7 @@
           </Key>
           <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_Users_FXconnect" FromRole="FXconnect" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="MaerskModel.FK_Users_FXconnect" FromRole="FXconnect" ToRole="User" />
         </EntityType>
         <EntityType Name="General">
           <Key>
@@ -461,37 +498,11 @@
           <Property Name="mngFctryCd" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="facBranchCd" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="packKey" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="LocationClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="StatusClient" Type="Boolean" />
+          <Property Name="deviceNumClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Report" Relationship="MaerskModel.FK_General_Reports" FromRole="General" ToRole="Report" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdFX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="User1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Pass" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="AddRess" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Birth" Type="DateTime" Precision="3" />
-          <Property Name="Phone" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="WorkingHour" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="GetBitEnd" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="GetBitGTIN" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="GetBitItemRef" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="AddCharacter" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="TakeAbsoluteValue" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="CheckDigit" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="CreateBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ModifyDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifyBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Admin" Type="Boolean" />
-          <Property Name="Status" Type="Boolean" />
-          <Property Name="PrependedCharacter" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="FXconnect" Relationship="Self.FK_Users_FXconnect" FromRole="Users" ToRole="FXconnect" />
         </EntityType>
         <EntityType Name="XMLValidate">
           <Key>
@@ -508,18 +519,6 @@
           <Property Name="ModifyBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Boolean" />
         </EntityType>
-        <Association Name="FK_Users_FXconnect">
-          <End Role="FXconnect" Type="Self.FXconnect" Multiplicity="0..1" />
-          <End Role="Users" Type="Self.User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FXconnect">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="IdFX" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Data" EntityType="Self.Datum" />
           <EntitySet Name="DataScanPhysicals" EntityType="Self.DataScanPhysical" />
@@ -528,14 +527,10 @@
           <EntitySet Name="Files" EntityType="Self.File" />
           <EntitySet Name="FXconnects" EntityType="Self.FXconnect" />
           <EntitySet Name="Generals" EntityType="Self.General" />
-          <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="XMLValidates" EntityType="Self.XMLValidate" />
-          <AssociationSet Name="FK_Users_FXconnect" Association="Self.FK_Users_FXconnect">
-            <End Role="FXconnect" EntitySet="FXconnects" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
           <EntitySet Name="EPCDiscrepancies" EntityType="MaerskModel.EPCDiscrepancy" />
           <EntitySet Name="Reports" EntityType="MaerskModel.Report" />
+          <EntitySet Name="Users" EntityType="MaerskModel.User" />
           <AssociationSet Name="FK_DataScanPhysical_Reports" Association="MaerskModel.FK_DataScanPhysical_Reports">
             <End Role="Report" EntitySet="Reports" />
             <End Role="DataScanPhysical" EntitySet="DataScanPhysicals" />
@@ -544,11 +539,15 @@
             <End Role="Report" EntitySet="Reports" />
             <End Role="Discrepancy" EntitySet="Discrepancies" />
           </AssociationSet>
+          <AssociationSet Name="FK_Users_FXconnect" Association="MaerskModel.FK_Users_FXconnect">
+            <End Role="FXconnect" EntitySet="FXconnects" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
           <AssociationSet Name="FK_General_Reports" Association="MaerskModel.FK_General_Reports">
             <End Role="Report" EntitySet="Reports" />
             <End Role="General" EntitySet="Generals" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="EPCDiscrepancy">
           <Key>
             <PropertyRef Name="Id" />
@@ -574,6 +573,9 @@
           <Property Name="mngFctryCd" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="facBranchCd" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="packKey" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="LocationClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="StatusClient" Type="Boolean" />
         </EntityType>
         <EntityType Name="Report">
           <Key>
@@ -591,9 +593,41 @@
           <Property Name="Status" Type="Boolean" />
           <Property Name="Shiper" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TimeStart" Type="DateTime" Precision="3" />
+          <Property Name="StatusClient" Type="Boolean" />
           <NavigationProperty Name="DataScanPhysicals" Relationship="MaerskModel.FK_DataScanPhysical_Reports" FromRole="Report" ToRole="DataScanPhysical" />
           <NavigationProperty Name="Discrepancies" Relationship="MaerskModel.FK_Discrepancy_Reports" FromRole="Report" ToRole="Discrepancy" />
           <NavigationProperty Name="Generals" Relationship="MaerskModel.FK_General_Reports" FromRole="Report" ToRole="General" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdFX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="User1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Pass" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Site" Type="Boolean" />
+          <Property Name="AddRess" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Birth" Type="DateTime" Precision="3" />
+          <Property Name="Phone" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WorkingHour" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GetBitEnd" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="GetBitGTIN" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="GetBitItemRef" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="AddCharacter" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="TakeAbsoluteValue" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CheckDigit" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifyBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Admin" Type="Boolean" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="PrependedCharacter" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FXconnect" Relationship="MaerskModel.FK_Users_FXconnect" FromRole="User" ToRole="FXconnect" />
         </EntityType>
         <Association Name="FK_DataScanPhysical_Reports">
           <End Type="MaerskModel.Report" Role="Report" Multiplicity="0..1" />
@@ -619,6 +653,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Users_FXconnect">
+          <End Type="MaerskModel.FXconnect" Role="FXconnect" Multiplicity="0..1" />
+          <End Type="MaerskModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FXconnect">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="IdFX" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_General_Reports">
           <End Type="MaerskModel.Report" Role="Report" Multiplicity="0..1" />
           <End Type="MaerskModel.General" Role="General" Multiplicity="*" />
@@ -631,7 +677,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -640,6 +686,11 @@
           <EntitySetMapping Name="Data">
             <EntityTypeMapping TypeName="MaerskModel.Datum">
               <MappingFragment StoreEntitySet="Data">
+                <ScalarProperty Name="deviceNumClient" ColumnName="deviceNumClient" />
+                <ScalarProperty Name="StatusClient" ColumnName="StatusClient" />
+                <ScalarProperty Name="LocationClient" ColumnName="LocationClient" />
+                <ScalarProperty Name="CartonID" ColumnName="CartonID" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="packKey" ColumnName="packKey" />
                 <ScalarProperty Name="facBranchCd" ColumnName="facBranchCd" />
                 <ScalarProperty Name="mngFctryCd" ColumnName="mngFctryCd" />
@@ -667,6 +718,11 @@
           <EntitySetMapping Name="DataScanPhysicals">
             <EntityTypeMapping TypeName="MaerskModel.DataScanPhysical">
               <MappingFragment StoreEntitySet="DataScanPhysical">
+                <ScalarProperty Name="deviceNumClient" ColumnName="deviceNumClient" />
+                <ScalarProperty Name="StatusClient" ColumnName="StatusClient" />
+                <ScalarProperty Name="LocationClient" ColumnName="LocationClient" />
+                <ScalarProperty Name="QtyScan" ColumnName="QtyScan" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="packKey" ColumnName="packKey" />
                 <ScalarProperty Name="facBranchCd" ColumnName="facBranchCd" />
                 <ScalarProperty Name="mngFctryCd" ColumnName="mngFctryCd" />
@@ -707,6 +763,10 @@
           <EntitySetMapping Name="Discrepancies">
             <EntityTypeMapping TypeName="MaerskModel.Discrepancy">
               <MappingFragment StoreEntitySet="Discrepancy">
+                <ScalarProperty Name="deviceNumClient" ColumnName="deviceNumClient" />
+                <ScalarProperty Name="StatusClient" ColumnName="StatusClient" />
+                <ScalarProperty Name="LocationClient" ColumnName="LocationClient" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="packKey" ColumnName="packKey" />
                 <ScalarProperty Name="facBranchCd" ColumnName="facBranchCd" />
                 <ScalarProperty Name="mngFctryCd" ColumnName="mngFctryCd" />
@@ -762,6 +822,10 @@
           <EntitySetMapping Name="Generals">
             <EntityTypeMapping TypeName="MaerskModel.General">
               <MappingFragment StoreEntitySet="General">
+                <ScalarProperty Name="deviceNumClient" ColumnName="deviceNumClient" />
+                <ScalarProperty Name="StatusClient" ColumnName="StatusClient" />
+                <ScalarProperty Name="LocationClient" ColumnName="LocationClient" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="packKey" ColumnName="packKey" />
                 <ScalarProperty Name="facBranchCd" ColumnName="facBranchCd" />
                 <ScalarProperty Name="mngFctryCd" ColumnName="mngFctryCd" />
@@ -787,36 +851,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="MaerskModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IdFX" ColumnName="IdFX" />
-                <ScalarProperty Name="User1" ColumnName="User" />
-                <ScalarProperty Name="Pass" ColumnName="Pass" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="AddRess" ColumnName="AddRess" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Birth" ColumnName="Birth" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="WorkingHour" ColumnName="WorkingHour" />
-                <ScalarProperty Name="GetBitEnd" ColumnName="GetBitEnd" />
-                <ScalarProperty Name="GetBitGTIN" ColumnName="GetBitGTIN" />
-                <ScalarProperty Name="GetBitItemRef" ColumnName="GetBitItemRef" />
-                <ScalarProperty Name="AddCharacter" ColumnName="AddCharacter" />
-                <ScalarProperty Name="TakeAbsoluteValue" ColumnName="TakeAbsoluteValue" />
-                <ScalarProperty Name="CheckDigit" ColumnName="CheckDigit" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
-                <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
-                <ScalarProperty Name="Admin" ColumnName="Admin" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="PrependedCharacter" ColumnName="PrependedCharacter" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="XMLValidates">
             <EntityTypeMapping TypeName="MaerskModel.XMLValidate">
               <MappingFragment StoreEntitySet="XMLValidate">
@@ -836,6 +870,9 @@
           <EntitySetMapping Name="EPCDiscrepancies">
             <EntityTypeMapping TypeName="MaerskModel.EPCDiscrepancy">
               <MappingFragment StoreEntitySet="EPCDiscrepancy">
+                <ScalarProperty Name="StatusClient" ColumnName="StatusClient" />
+                <ScalarProperty Name="LocationClient" ColumnName="LocationClient" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="packKey" ColumnName="packKey" />
                 <ScalarProperty Name="facBranchCd" ColumnName="facBranchCd" />
                 <ScalarProperty Name="mngFctryCd" ColumnName="mngFctryCd" />
@@ -863,6 +900,7 @@
           <EntitySetMapping Name="Reports">
             <EntityTypeMapping TypeName="MaerskModel.Report">
               <MappingFragment StoreEntitySet="Reports">
+                <ScalarProperty Name="StatusClient" ColumnName="StatusClient" />
                 <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
                 <ScalarProperty Name="Shiper" ColumnName="Shiper" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
@@ -874,6 +912,37 @@
                 <ScalarProperty Name="So" ColumnName="So" />
                 <ScalarProperty Name="Po" ColumnName="Po" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="MaerskModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="PrependedCharacter" ColumnName="PrependedCharacter" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+                <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CheckDigit" ColumnName="CheckDigit" />
+                <ScalarProperty Name="TakeAbsoluteValue" ColumnName="TakeAbsoluteValue" />
+                <ScalarProperty Name="AddCharacter" ColumnName="AddCharacter" />
+                <ScalarProperty Name="GetBitItemRef" ColumnName="GetBitItemRef" />
+                <ScalarProperty Name="GetBitGTIN" ColumnName="GetBitGTIN" />
+                <ScalarProperty Name="GetBitEnd" ColumnName="GetBitEnd" />
+                <ScalarProperty Name="WorkingHour" ColumnName="WorkingHour" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Birth" ColumnName="Birth" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AddRess" ColumnName="AddRess" />
+                <ScalarProperty Name="Site" ColumnName="Site" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+                <ScalarProperty Name="User1" ColumnName="User" />
+                <ScalarProperty Name="IdFX" ColumnName="IdFX" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

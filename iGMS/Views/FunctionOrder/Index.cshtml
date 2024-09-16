@@ -3,86 +3,53 @@
     ViewBag.Title = @Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.packinglist);
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link href="~/Content/inputmultiple.css" rel="stylesheet" />
-<div class="container">
-    <div class="form-group row">
-        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-            <form id="form">
-                <div class="card-body">
-                    <div class="form-group row">
-                        <div class="col-lg-6">
-                            <label>port_code:</label>
-                            <input type="text" name="portCode" id="portCode" class="form-control" placeholder="Enter full name">
-                            <span class="form-text text-muted">Please enter your port_code</span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label>Date:</label>
-                            <input type="date" class="form-control" name="date" id="date" placeholder="Bottom left">
-                            <span class="form-text text-muted">Please enter your date</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-10">
-                            <button type="button" onclick="getFileApi()" class="btn btn-success mr-2">Get file</button>
-                        </div>
-                    </div>
+<div class="container" style="padding-left: 10%;padding-right: 10%;padding-top:5%">
+    <!-- Khu vực kéo thả tệp -->
+    <div class="form-group">
+        <div class="dropzone dropzone-default" id="kt_dropzone_1">
+            <div class="dropzone-msg dz-message needsclick">
+                <div class="mb-4">
+                    <svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 32 32"><g fill="none" fill-rule="evenodd"><rect width="32" height="32" rx="16" fill="#2275D7"></rect><path d="M21.973 21.152H9.863l-1.108-5.087h14.464l-1.246 5.087zM9.935 11.37h3.958l.886 1.444a.673.673 0 0 0 .585.316h6.506v1.37H9.935v-3.13zm14.898 3.44a.793.793 0 0 0-.616-.31h-.978v-2.126c0-.379-.275-.613-.653-.613H15.75l-.886-1.445a.673.673 0 0 0-.585-.316H9.232c-.378 0-.667.209-.667.587V14.5h-.782a.793.793 0 0 0-.61.303.795.795 0 0 0-.155.663l1.45 6.633c.078.36.396.618.764.618h13.354c.36 0 .674-.246.76-.595l1.631-6.636a.795.795 0 0 0-.144-.675z" fill="#FFF"></path></g></svg>
                 </div>
-            </form>
-            @*<div class="card-body" style="display:flex;justify-content:center;text-align:center">
-                <input onchange="upload(event)" style="transform:translateY(150%)" class="file-uploader__submit-button" type="file" value="@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.upload) PreASN">
-            </div>*@
+                <h3 class="dropzone-msg-title text-lg font-semibold mb-4">Drag and drop document here to upload</h3>
+                <button class="btn-success bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">Select to device</button>
+                <p class="text-gray-500 mt-2">Up to 100mb for xlsx, xls, ...</p>
+            </div>
         </div>
-        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6" style=" margin-top: 5%;">
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-                <div class="form-group">
-                    <div class="input-icon input-icon-right">
-                        <input type="search" id="seach" class="form-control" placeholder="@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.search)...">
-                        <span>
-                            <i class="flaticon2-search-1 icon-md"></i>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="card card-custom card-stretch gutter-b">
-                <div class="card-header border-0">
-                    <h3 class="card-title font-weight-bolder text-dark">PreASN</h3>
-                </div>
-                <div class="card-body pt-2" id="tbd">
-                </div>
-            </div>
+    </div>
+
+    <!-- Search Input -->
+    <div class="input-group input-group-sm input-group-solid" style="max-width: 275px">
+        <input type="text" class="form-control" id="search" placeholder="Search...">
+        <div class="input-group-append">
+            <span class="input-group-text">
+                <span class="svg-icon">
+                    <!--begin::Svg Icon | path:assets/media/svg/icons/General/Search.svg-->
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24"></rect>
+                            <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                            <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero"></path>
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </span>
+                <!--<i class="flaticon2-search-1 icon-sm"></i>-->
+            </span>
+        </div>
+    </div>
+
+    <!-- PreASN Card -->
+    <div class="card card-custom card-stretch gutter-b mt-8">
+        <div class="card-header border-b border-gray-200 pb-2">
+            <h3 class="card-title font-weight-bolder text-lg text-dark">PreASN</h3>
+        </div>
+        <div class="card-body pt-4" id="tbd">
+            <!-- Nội dung sẽ được thêm vào đây -->
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 100%;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.checkthegoods)</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i aria-hidden="true" class="ki ki-close"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="ex"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-success mr-2 on" onclick="RFID()">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.startRFIDscanning)</button>
-                <button type="submit" class="btn btn-warning mr-2" onclick="error()">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.review)</button>
-                <button type="submit" class="btn btn-secondary mr-2 off" style="display:none" onclick=" Stop()">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.stopRFIDscanning)</button>
-                <button type="submit" class="btn btn-primary mr-2" id="complete">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.complete)</button>
-                <button type="button" class="btn btn-light-danger font-weight-bold" data-dismiss="modal">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.close)</button>
-            </div>
-            <div class="form-group  row">
-                <label for="example-search-input" class="col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 col-form-label">@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.thereareotheritemcodes)<span style="color:red"> (*) </span></label> <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10 col-xxl-10">
-                    <textarea class="form-control" id="idorder"></textarea>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<button hidden type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
-</button>
 @section scripts{
 
     <script>
@@ -92,56 +59,12 @@
         var wecannotacceptthisfiletypeatthistimeVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.wecannotacceptthisfiletypeatthistime)"
         var pleaseselectafileVar = "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.pleaseselectafile)"
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+   
     <script src="~/Scripts/xlsx.full.min.js"></script>
     <script>
 
-        function getFileApi() {
-            const form = document.getElementById("form");
-            const formData = new FormData(form);
-            formData.append("device","pc")
-            $.ajax({
-                url: 'functionorder/GetFileApi',
-                type: 'post',
-                data: formData,
-                processData: false, // Không xử lý dữ liệu
-                contentType: false, // Không set content type
-                success: function (data) {
-                    if (data.code == 200) {
-                        toastr.success(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.success) !!!");
-                        window.location.href = "/HOD/Uniqlo"
-                    } else {
-                          toastr.error(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
-                    }
-                },
-            })
-        }
-
-        function getFile(file) {
-            var link = "/PreASN/" + file + ""
-            var name = file.replace(".xlsx", "").replace(".csv", "")
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', link, true);
-            xhr.responseType = 'text'; // Đặt responseType thành 'text' cho dữ liệu CSV
-            xhr.onload = function (e) {
-                if (xhr.status == 200) {
-                    var csvData = xhr.responseText; // Dữ liệu CSV
-                    var parsedData = Papa.parse(csvData, { header: true }); // Sử dụng PapaParse để phân tích dữ liệu CSV
-                    var data = parsedData.data.filter(function (row) {
-                        return Object.values(row).some(value => value !== '');
-                    });
-                    // Lưu trữ tên của báo cáo
-                    localStorage.setItem('nameReports', name);
-                    // Gọi hàm successFunction với dữ liệu và tên báo cáo
-                    successFunction(data, name);
-                }
-            };
-            xhr.send();
-        }
-
         let dataIDTable;
-
-        let seach = "";
+         let seach = "";
         table(seach)
         $('#seach').keyup(function () {
             seach = $('#seach').val().trim()
@@ -177,67 +100,71 @@
                 },
             })
         }
-
         $(document).on('click', 'a[name="show"]', function () {
             $('#ex').empty()
             $('#idorder').val('')
             var link = $(this).attr('data-href')
-            var name = $(this).text().replace(".xlsx", "").replace(".csv","")
+            var name = $(this).text().replace(".xlsx", "")
             var xhr = new XMLHttpRequest();
             xhr.open('GET', link, true);
-            if (!$(this).text().includes(".csv")) {
-                xhr.responseType = 'arraybuffer';
-                xhr.onload = function (e) {
-                    if (xhr.status == 200) {
-                        var data = new Uint8Array(xhr.response);
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = function (e) {
+                if (xhr.status == 200) {
+                    var data = new Uint8Array(xhr.response);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var sheet_name_list = workbook.SheetNames;
+                    var sheet_data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+                    localStorage.setItem('nameReports', name);
+
+                     successFunction(sheet_data, name)
+                }
+            };
+            xhr.send();
+
+        })
+
+        var KTDropzoneDemo = function () {
+            // Private functions
+            var demo1 = function () {
+                // single file upload
+                var drpzone = new Dropzone("#kt_dropzone_1", { // Make the whole body a dropzone
+                    url: "/PreASN", // Set the url for your upload script location
+                    parallelUploads: 1,
+                    maxFilesize: 1, // Max filesize in MB
+                    autoQueue: false, // Make sure the files aren't queued until manually added
+                    withCredentials: true,
+                    acceptedFiles: ".xlsx,.xls"
+                });
+
+                drpzone.on("addedfile", function (file) {
+                    var name = file["name"].replace('.xlsx', '').replace(".csv", "");
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        var data = new Uint8Array(e.target.result);
                         var workbook = XLSX.read(data, { type: 'array' });
                         var sheet_name_list = workbook.SheetNames;
                         var sheet_data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
                         localStorage.setItem('nameReports', name);
-                        successFunction(sheet_data, name)
-                    }
-                };
-                xhr.send();
-            }else {
-                xhr.responseType = 'text'; // Đặt responseType thành 'text' cho dữ liệu CSV
-                xhr.onload = function (e) {
-                    if (xhr.status == 200) {
-                        var csvData = xhr.responseText; // Dữ liệu CSV
-                        var parsedData = Papa.parse(csvData, { header: true }); // Sử dụng PapaParse để phân tích dữ liệu CSV
-                        var data = parsedData.data.filter(function (row) {
-                            return Object.values(row).some(value => value !== '');
-                        });
-                        // Lưu trữ tên của báo cáo
-                        localStorage.setItem('nameReports', name);
-                        // Gọi hàm successFunction với dữ liệu và tên báo cáo
-                        console.log(data)
-                        successFunction(data, name);
-                    }
-                };
-                xhr.send();
+
+                        successFunction(sheet_data, name);
+                    };
+
+                    reader.readAsArrayBuffer(file);
+                });
             }
-        })
-        //function getFile(file) {
-        //    var link = "/PreASN/" + file + "";
-        //    var name = file.replace(".xlsx", "").replace(".csv", "");
+            return {
+                // public functions
+                init: function () {
+                    demo1();
 
-        //    var xhr = new XMLHttpRequest();
-        //    xhr.open('GET', link, true);
-        //    xhr.responseType = 'text'; // Đặt responseType thành 'text' cho dữ liệu CSV
-        //    xhr.onload = function (e) {
-        //        if (xhr.status == 200) {
-        //            var csvData = xhr.responseText; // Dữ liệu CSV
-        //            var parsedData = Papa.parse(csvData, { header: true }); // Sử dụng PapaParse để phân tích dữ liệu CSV
+                }
+            };
+        }();
 
-        //            // Lưu trữ tên của báo cáo
-        //            localStorage.setItem('nameReports', name);
-        //            console.log(parsedData.data); return;
-        //            // Gọi hàm successFunction với dữ liệu và tên báo cáo
-        //            successFunction(parsedData.data, name);
-        //        }
-        //    };
-        //    xhr.send();
-        //}
+        KTUtil.ready(function () {
+            KTDropzoneDemo.init();
+        });
         function upload(event) {
             var file = event.target.files[0];
             var name = file["name"].replace('.xlsx', '').replace(".csv", "");
@@ -256,7 +183,52 @@
 
             reader.readAsArrayBuffer(file);
         }
+        function CreateIndexDB(data) {
+            return new Promise((resolve, reject) => {
+                // In ra dữ liệu để kiểm tra
+                console.log(data);
 
+                // Mở hoặc tạo một cơ sở dữ liệu
+                let request = indexedDB.open("PreASN", 1);
+
+                request.onerror = (event) => {
+                    toastr.error(`Database error: ${event.target.error?.message}`);
+                    reject(event.target.error);
+                };
+
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+
+                    // Tạo object store với autoIncrement
+                    const objectStore = db.createObjectStore("data", { autoIncrement: true });
+
+                    // Thêm dữ liệu vào object store
+                    data.forEach((d) => {
+                        objectStore.add(d);
+                    });
+                };
+
+                request.onsuccess = (event) => {
+                    console.log("Database opened/created successfully.");
+                    resolve();
+                };
+            });
+        }
+        function deleteDatabaseAndCreate(dbName, data) {
+            return new Promise((resolve, reject) => {
+                let deleteRequest = indexedDB.deleteDatabase(dbName);
+
+                deleteRequest.onerror = (event) => {
+                    console.error(`Lỗi khi xóa cơ sở dữ liệu: ${event.target.error?.message}`);
+                    reject(event.target.error);
+                };
+
+                deleteRequest.onsuccess = (event) => {
+                    console.log(`Cơ sở dữ liệu "${dbName}" đã được xóa thành công.`);
+                    resolve(CreateIndexDB(data)); // Gọi CreateIndexDB sau khi xóa xong
+                };
+            });
+        }
     </script>
     <script>
         var customer
@@ -270,27 +242,28 @@
             return $('#tbdscaner')[0].childNodes[prm]
         }
         //success set table
-        function successFunction(data, name) {
+    async function successFunction(data, name) {
+        var type = false;
+        if ("EPC-RFID" in data[0]) {
+            await deleteDatabaseAndCreate("PreASN", data);
+            type = true;
+        } else {
             localStorage.setItem('data', JSON.stringify(data));
-            var type = false;
-            if ("EPC" in data[0]||"epc" in data[0]) {
-                type = true;
-            } else {
-                type = false;
-            }
-            $.ajax({
-                url: '/Home/CheckPreASN',
-                type: 'get',
-                data: { name, type },
-                success: function (data) {
-                    if (data.code == 200) {
-                       
-                        window.location.href = data.url
-                    }else if (data.code == "error") {
-                                toastr.error(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
-                            }
-                },
-            })
+            type = false;
         }
+
+        $.ajax({
+            url: '/Home/CheckPreASN',
+            type: 'get',
+            data: { name, type },
+            success: function (data) {
+                if (data.code == 200) {
+                    window.location.href = data.url;
+                } else if (data.code == "error") {
+                    toastr.error(data.msg, "@Html.DisplayName(Zebra_RFID_Scanner.Resources.Resource.error) !!!");
+                }
+            },
+        });
+    }
     </script>
 }

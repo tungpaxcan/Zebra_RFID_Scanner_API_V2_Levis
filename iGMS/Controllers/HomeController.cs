@@ -92,15 +92,6 @@ namespace Zebra_RFID_Scanner.Controllers
                     var idRe = db.Reports.OrderBy(x => (datetime)-(x.CreateDate.Value.Day + (x.CreateDate.Value.Month * 30) + x.CreateDate.Value.Year) >= 56).ToList().LastOrDefault().Id;
                     Dele.DeleteReports(idRe);
                 }
-                //if (datetime>=2237)
-                //{
-                //    var user = db.Users.ToList();
-                //    foreach(var u in user)
-                //    {
-                //        u.IdFX = null;
-                //        db.SaveChanges();
-                //    }
-                //}
                 var c = (User)Session["user"];
                 Session["GetBitEnd"] = c.GetBitEnd;
                 Session["GetBitSGTIN"] = c.GetBitGTIN;
@@ -194,7 +185,7 @@ namespace Zebra_RFID_Scanner.Controllers
             }
         }
         [System.Web.Mvc.HttpPost]
-        public JsonResult Save(string idReports, string Ctn, string ctnError, string epcToUpc, string Po, string So, string Sku, string info, string Consignee, string Shipper,string TimeStart,string EPCDiscrepancy)
+        public JsonResult Save(string idReports, string Ctn, string ctnError, string epcToUpc, string Po, string So, string Sku, string info, string Consignee, string Shipper,string TimeStart,string EPCDiscrepancy,string type)
         {
             try
             {
@@ -318,7 +309,7 @@ namespace Zebra_RFID_Scanner.Controllers
             }
             catch (Exception e)
             {
-                return Json(new { code = 500, msg = "Error " + e.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = 500, msg = "Error " + e.Message + e.InnerException }, JsonRequestBehavior.AllowGet);
             }
         }
 

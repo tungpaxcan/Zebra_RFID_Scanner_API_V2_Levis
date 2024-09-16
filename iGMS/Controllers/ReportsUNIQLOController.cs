@@ -18,49 +18,6 @@ namespace Zebra_RFID_Scanner.Controllers
             return View();
         }
         [HttpGet]
-        public JsonResult ReportsAll(string name, string date)
-        {
-            try
-            {
-                string date1 = date == "" ? "" : date.Substring(0, date.IndexOf("/")).Trim();
-                string date2 = date == "" ? "" : date.Substring(date.IndexOf("/") + 1).Trim();
-                var s1 = sumDate(date1);
-                var s2 = sumDate(date2);
-                var reports = (from b in db.Reports
-                               where b.Status == true && b.So == ""
-                               select new
-                               {
-                                   id = b.Id,
-                                   createDate = b.CreateDate,
-                                   createBy = b.CreateBy,
-                                   status = b.Status == true ? "Confirmed" : "Unconfimred"
-                               }).ToList();
-                if (name != "" && date != "")
-                {
-                    if (name == "-1")
-                    {
-                        var reportss = reports.Where(x => (Convert.ToInt32(x.createDate.Value.Day) + (Convert.ToInt32(x.createDate.Value.Month) * 30) + Convert.ToInt32(x.createDate.Value.Year)) >= s1 &&
-                                                         (Convert.ToInt32(x.createDate.Value.Day) + (Convert.ToInt32(x.createDate.Value.Month) * 30) + Convert.ToInt32(x.createDate.Value.Year)) <= s2);
-                        return Json(new { code = 200, reports = reportss }, JsonRequestBehavior.AllowGet);
-                    }
-                    else
-                    {
-                        var user = db.Users.SingleOrDefault(x => x.Id.ToString() == name);
-                        name = user.Name;
-                        var reportss = reports.Where(x => (Convert.ToInt32(x.createDate.Value.Day) + (Convert.ToInt32(x.createDate.Value.Month) * 30) + Convert.ToInt32(x.createDate.Value.Year)) >= s1 && x.createBy == name
-                        && (Convert.ToInt32(x.createDate.Value.Day) + (Convert.ToInt32(x.createDate.Value.Month) * 30) + Convert.ToInt32(x.createDate.Value.Year)) <= s2);
-                        return Json(new { code = 200, reports = reportss }, JsonRequestBehavior.AllowGet);
-                    }
-                }
-
-                return Json(new { code = 200, reports = reports }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception e)
-            {
-                return Json(new { code = 500, msg = rm.GetString("false") + " " + e.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
-        [HttpGet]
         public JsonResult UnconfirmedReports(string name, string date)
         {
             try
@@ -110,7 +67,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 string date2 = date == "" ? "" : date.Substring(date.IndexOf("/") + 1).Trim();
                 var s1 = sumDate(date1);
                 var s2 = sumDate(date2);
-                var reports = (from b in db.Reports.Where(x => x.Status == true && x.So == "")
+                var reports = (from b in db.Reports.Where(x => x.Status == true )
                                select new
                                {
                                    id = b.Id,

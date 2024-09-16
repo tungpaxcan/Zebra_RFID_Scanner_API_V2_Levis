@@ -32,9 +32,9 @@ namespace Zebra_RFID_Scanner.Models
         public virtual DbSet<File> Files { get; set; }
         public virtual DbSet<FXconnect> FXconnects { get; set; }
         public virtual DbSet<General> Generals { get; set; }
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<XMLValidate> XMLValidates { get; set; }
         public virtual DbSet<EPCDiscrepancy> EPCDiscrepancies { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

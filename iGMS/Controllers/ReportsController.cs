@@ -43,13 +43,12 @@ namespace Zebra_RFID_Scanner.Controllers
                 var s1 = sumDate(date1);
                 var s2 = sumDate(date2);
                 var reports = (from b in db.Reports
-                               where b.Status == true 
                                select new
                                {
                                    id = b.Id,
                                    createDate = b.CreateDate,
                                    createBy = b.CreateBy,
-                                   status = b.Status == true ? "Confirmed" : "Unconfimred"
+                                   status = b.Status
                                }).ToList();
                 if (name != "" && date != "")
                 {
@@ -108,7 +107,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 string date2 = date == "" ? "" : date.Substring(date.IndexOf("/") + 1).Trim();
                 var s1 = sumDate(date1);
                 var s2 = sumDate(date2);
-                var reports = (from b in db.Reports.Where(x => x.Status == false && x.So !="")
+                var reports = (from b in db.Reports.Where(x => x.Status == false)
                                select new
                                {
                                    id = b.Id,
@@ -168,7 +167,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 string date2 = date == "" ? "" : date.Substring(date.IndexOf("/") + 1).Trim();
                 var s1 = sumDate(date1);
                 var s2 = sumDate(date2);
-                var reports = (from b in db.Reports.Where(x => x.Status == true && x.So != "")
+                var reports = (from b in db.Reports.Where(x => x.Status == true)
                                select new
                                {
                                    id = b.Id,
@@ -200,10 +199,11 @@ namespace Zebra_RFID_Scanner.Controllers
             }
         }
         [HttpGet]
-        public JsonResult UserReports()
+        public JsonResult UserReports(string type)
         {
             try
             {
+                var user = (User)Session["user"];
                 var reports = (from b in db.Users.Where(x => x.Id > 0)
                                select new
                                {
@@ -574,7 +574,7 @@ namespace Zebra_RFID_Scanner.Controllers
             }
         }
         [HttpGet]
-        public JsonResult confirmHod(string id)
+        public JsonResult confirmHod(string id,string so)
         {
             try
             {
@@ -585,6 +585,32 @@ namespace Zebra_RFID_Scanner.Controllers
                 reports.Status = true;
                 reports.ModifyDate = DateTime.Now;
                 reports.ModifyBy = name;
+                reports.So = so;
+                var data = db.Data.Where(x => x.IdReports == id).ToList();
+                data.ForEach(x =>
+                {
+                    x.So = so;
+                });
+                var dataScan = db.DataScanPhysicals.Where(x => x.IdReports == id).ToList();
+                dataScan.ForEach(x =>
+                {
+                    x.So = so;
+                });
+                var dis = db.Discrepancies.Where(x => x.IdReports == id).ToList();
+                dis.ForEach(x =>
+                {
+                    x.So = so;
+                });
+                var epcDis = db.EPCDiscrepancies.Where(x => x.IdReports == id).ToList();
+                epcDis.ForEach(x =>
+                {
+                    x.So = so;
+                });
+                var general = db.Generals.Where(x => x.IdReports == id).ToList();
+                general.ForEach(x =>
+                {
+                    x.So = so;
+                });
                 db.SaveChanges();
                 return Json(new { code = 200, date = date, id = id }, JsonRequestBehavior.AllowGet);
             }
@@ -995,9 +1021,9 @@ namespace Zebra_RFID_Scanner.Controllers
             {
                 hod = hod.Substring(0, hod.IndexOf(" "));
                 string folderName = @"C:\RFID\Reports\";
-                string filePath = "Reports All " + name + "_" + hod + ".xlsx";
-                string folderPath = folderName + filePath;
                 var reports = db.Reports.SingleOrDefault(x => x.Id == id);
+                string filePath = "ReportsAll " + reports.Id + "_" + hod + ".xlsx";
+                string folderPath = folderName + filePath;
                 using (ExcelPackage excelPackage = new ExcelPackage())
                 {
                     List<ReportsEPC> datasGen = new List<ReportsEPC>();
