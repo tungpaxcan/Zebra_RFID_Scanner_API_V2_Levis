@@ -244,18 +244,42 @@
         //success set table
     async function successFunction(data, name) {
         var type = false;
+        var nameReports = name;
         if ("EPC-RFID" in data[0]) {
-            await deleteDatabaseAndCreate("PreASN", data);
-            type = true;
+            const arrayPO = [...new Set(data.map(obj => obj.PO))];
+            var option = ``;
+            $.each(arrayPO, function (k, v) {
+                option += `<option value="${v}">${v}</option>`
+            })
+            const result = await Swal.fire({
+                title: "PO list",
+                text: "Select PO to get scan data",
+                html: `<select id="poSelect">
+                         ${option == `` ? `<option>Not PO</option>` : option}
+                   </select>`,
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Continue"
+            });
+            if (result.isConfirmed) {
+                var selectedPO = $('#poSelect').val();
+                const filteredResult = data.filter(item => item.PO === selectedPO);
+                await deleteDatabaseAndCreate("PreASN", filteredResult);
+                nameReports = `${nameReports}_${selectedPO}`
+                localStorage.setItem('nameReports', nameReports);
+                type = true;
+            } else {
+
+            }
         } else {
             localStorage.setItem('data', JSON.stringify(data));
             type = false;
         }
-
         $.ajax({
             url: '/Home/CheckPreASN',
             type: 'get',
-            data: { name, type },
+            data: { name:nameReports, type },
             success: function (data) {
                 if (data.code == 200) {
                     window.location.href = data.url;

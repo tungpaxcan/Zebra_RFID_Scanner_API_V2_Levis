@@ -338,7 +338,7 @@ namespace Zebra_RFID_Scanner.Controllers
                                ctn = a.CartonTo,
                                status = a.Status == true ? "Matched" : "Mismatched",
                                upc = a.UPC,
-                               qty = a.Qty
+                               qty = a.Qty,
                            }).ToList();
                 var pages = Ctn.Count() % pageSize == 0 ? Ctn.Count() / pageSize : Ctn.Count() / pageSize + 1;
                 Ctn = Ctn.Skip((page - 1) * pageSize).Take(pageSize).ToList();

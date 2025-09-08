@@ -158,7 +158,7 @@ namespace Zebra_RFID_Scanner.Controllers
             }
         }
         [System.Web.Mvc.HttpGet]
-        public JsonResult CheckPreASN(string name,bool type)
+        public JsonResult CheckPreASN(string name)
         {
             try
             {
@@ -168,14 +168,7 @@ namespace Zebra_RFID_Scanner.Controllers
                 }
                 else
                 {
-                    if(type == false)
-                    {
-                        return Json(new { code = 200,url = "/Home/Index" }, JsonRequestBehavior.AllowGet);
-                    }
-                    else
-                    {
-                        return Json(new { code = 200, url = "/Home/Index2" }, JsonRequestBehavior.AllowGet);
-                    }
+                    return Json(new { code = 200, url = "/Home/Index2" }, JsonRequestBehavior.AllowGet);
                   
                 }
             }
@@ -185,7 +178,7 @@ namespace Zebra_RFID_Scanner.Controllers
             }
         }
         [System.Web.Mvc.HttpPost]
-        public JsonResult Save(string idReports, string Ctn, string ctnError, string epcToUpc, string Po, string So, string Sku, string info, string Consignee, string Shipper,string TimeStart,string EPCDiscrepancy,string type)
+        public JsonResult Save(string idReports, string Ctn, string ctnError, string epcToUpc, string Po, string So, string Sku, string info, string Consignee, string Shipper,string TimeStart,string EPCDiscrepancy)
         {
             try
             {

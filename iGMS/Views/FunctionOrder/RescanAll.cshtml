@@ -565,11 +565,6 @@
                     }
                 }
             } else {
-                $('#tbdTotal').append(`<tr>
-                        <td>${upc}</td>
-                        <td id="qty${upc}"></td>
-                        <td id="total${upc}" class="s">1</td>
-                        <td>Mismatched</td></tr>`)
                 arrayReportsEpcToUpc = arrayReportsEpcToUpc.filter(function (obj) {
                     return obj.UPC !== upc;
                 });//xoa các obj trong mang khong khop voi preASN

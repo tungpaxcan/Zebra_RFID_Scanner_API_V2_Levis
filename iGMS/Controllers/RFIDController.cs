@@ -65,16 +65,12 @@ namespace Zebra_RFID_Scanner.Controllers
                     IdFX = tag.data.userDefined,
                     Status = true,
                 };
-
                 if (!db.DetailEpcs.Any(x => x.IdEPC.Equals(tag.data.idHex)))
                     db.DetailEpcs.Add(t);
                 db.SaveChanges();
             }
-
             return "";
         }
-
-
     }
 
 }
